@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Informativo Gerencial - Rodoanel Norte</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #f1f5f9;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-light: rgba(226, 232, 240, 0.8);
+            --accent: #006C5E;
+            --accent-dark: #005a4e;
+            --accent-light: rgba(0, 108, 94, 0.1);
+            --accent-glow: rgba(0, 108, 94, 0.2);
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.15);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.15);
+            --danger: #ef4444;
+            --danger-light: rgba(239, 68, 68, 0.15);
+            --sidebar-bg: rgba(255, 255, 255, 0.95);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 35px -8px rgba(0, 0, 0, 0.1);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+        }
+
+        body.dark {
+            --bg-primary: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.95);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-light: rgba(51, 65, 85, 0.8);
+            --accent-light: rgba(0, 108, 94, 0.15);
+            --sidebar-bg: rgba(30, 41, 59, 0.95);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            padding: 24px;
+            min-height: 100vh;
+            transition: background 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-light);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo-area img {
+            height: 44px;
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 6px 14px;
+            object-fit: contain;
+        }
+        .title-area { text-align: center; }
+        .title-area h1 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .title-area .subtitle {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.8);
+        }
+        .top-actions { display: flex; align-items: center; gap: 12px; }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .user-avatar:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        
+        .weather-mini {
+            background: rgba(255,255,255,0.15);
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: white;
+        }
+        .menu-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 40px;
+            padding: 6px 16px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: white;
+            transition: all 0.2s;
+        }
+        .menu-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        [data-tooltip] {
+            position: relative;
+            cursor: pointer;
+        }
+        [data-tooltip]:before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 6px 12px;
+            background: var(--text-primary);
+            color: white;
+            font-size: 0.7rem;
+            border-radius: 8px;
+            white-space: nowrap;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+        }
+        [data-tooltip]:hover:before {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-4px);
+        }
+
+        .info-line {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            text-align: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-light);
+            background: transparent;
+        }
+        .info-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .info-value {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            cursor: pointer;
+            display: inline-block;
+            background: var(--accent-light);
+            padding: 4px 14px;
+            border-radius: 40px;
+            margin-top: 6px;
+            transition: all 0.2s;
+        }
+        .info-value:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .cftv-section {
+            margin: 24px;
+            background: var(--accent-light);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 1px solid var(--border-light);
+        }
+        .cftv-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .cftv-title span {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+            padding-left: 12px;
+            border-left: 3px solid var(--accent);
+        }
+        .cftv-grid {
+            display: flex;
+            gap: 20px;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .cftv-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px 16px;
+            text-align: center;
+            flex: 1;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+        .cftv-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        .cftv-card .number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 8px 0;
+        }
+        .cftv-bar {
+            display: flex;
+            height: 32px;
+            border-radius: 30px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        .cftv-bar-func { background: var(--success); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600; }
+        .cftv-bar-parc { background: var(--warning); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600; }
+        .cftv-bar-inop { background: var(--danger); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600; }
+        .cftv-legend {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin-top: 12px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 20px 24px;
+        }
+        .status-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 18px 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .status-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .status-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 6px 0;
+        }
+
+        .chart-container {
+            margin: 0 24px 24px 24px;
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+        }
+        canvas { max-height: 220px; width: 100%; }
+
+        .section { margin: 24px; }
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        .edit-badge {
+            background: var(--accent-light);
+            border: none;
+            border-radius: 30px;
+            padding: 5px 16px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--accent);
+            transition: all 0.2s;
+        }
+        .edit-badge:hover {
+            background: var(--accent);
+            color: white;
+        }
+        .highlights, .observations {
+            padding: 18px 22px;
+            background: var(--accent-light);
+            border-radius: var(--radius-md);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            background: var(--bg-card);
+        }
+        table {
+            width: 100%;
+            font-size: 0.75rem;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        th, td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-primary);
+            text-align: left;
+            vertical-align: middle;
+        }
+        th {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+        /* Larguras fixas para cada coluna */
+        th:nth-child(1), td:nth-child(1) { width: 18%; }  /* SISTEMA */
+        th:nth-child(2), td:nth-child(2) { width: 15%; }  /* STATUS */
+        th:nth-child(3), td:nth-child(3) { width: 10%; }  /* 1º TESTE */
+        th:nth-child(4), td:nth-child(4) { width: 10%; }  /* 2º TESTE */
+        th:nth-child(5), td:nth-child(5) { width: 35%; }  /* OBSERVAÇÃO */
+        th:nth-child(6), td:nth-child(6) { width: 12%; }  /* AÇÃO */
+        
+        tbody tr:hover { background: var(--accent-light); }
+        .status-badge {
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            transition: all 0.2s;
+            font-size: 0.7rem;
+        }
+        .status-badge:hover { transform: scale(1.03); }
+
+        .delete-icon {
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        .delete-icon:hover {
+            transform: scale(1.15);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin: 20px 24px;
+        }
+        .action-btn {
+            background: var(--accent-light);
+            border: none;
+            border-radius: 40px;
+            padding: 7px 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--accent);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .action-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 18px;
+            background: var(--accent-light);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 20px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -500px;
+            width: 500px;
+            height: 100%;
+            background: var(--sidebar-bg);
+            box-shadow: -4px 0 30px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.open { right: 0; }
+        .sidebar-header {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 26px;
+            cursor: pointer;
+        }
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 14px 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+        
+        .occurrence-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .occurrence-item:hover {
+            background: var(--accent-light);
+            border-radius: 10px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        .occurrence-item span:last-child {
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+        .occurrence-item[data-value="low"] span:last-child { background: var(--success-light); color: var(--success); }
+        .occurrence-item[data-value="medium"] span:last-child { background: var(--warning-light); color: var(--warning); }
+        .occurrence-item[data-value="high"] span:last-child { background: var(--danger-light); color: var(--danger); }
+        
+        .vdm-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .vdm-item:hover {
+            background: var(--accent-light);
+            border-radius: 10px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        .vdm-item span:last-child { font-weight: 700; color: var(--accent); }
+        
+        .link-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .link-item:hover {
+            background: var(--accent-light);
+            border-radius: 10px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        .link-title { font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        
+        .contact-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .contact-item:hover {
+            background: var(--accent-light);
+            border-radius: 10px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        .contact-item strong { color: var(--accent); }
+        
+        .equipe-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+        .equipe-table th {
+            background: var(--accent-light);
+            color: var(--accent);
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-light);
+        }
+        .equipe-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-primary);
+        }
+        .equipe-table tr:hover { background: var(--accent-light); }
+        .status-operator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-operator.active { background: var(--success); }
+        .status-operator.away { background: var(--warning); }
+        .status-operator.offline { background: var(--danger); }
+        
+        .status-pill-equipe {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .status-pill-equipe.active { background: var(--success-light); color: var(--success); }
+        .status-pill-equipe.away { background: var(--warning-light); color: var(--warning); }
+        .status-pill-equipe.offline { background: var(--danger-light); color: var(--danger); }
+        
+        .editable-cell-equipe {
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        .editable-cell-equipe:hover { background: var(--accent-light); }
+
+        .edit-menu-btn {
+            background: var(--accent-light);
+            border: none;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 16px;
+            color: var(--accent);
+            transition: all 0.2s;
+        }
+        .edit-menu-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            width: 90%;
+            max-width: 520px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: modalFadeIn 0.2s ease;
+            border: 1px solid var(--border-light);
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-header {
+            padding: 22px 26px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--accent-light);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+        .modal-header h3 { color: var(--accent); font-weight: 700; font-size: 1.2rem; margin: 0; display: flex; align-items: center; gap: 10px; }
+        .modal-close {
+            background: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        .modal-close:hover { background: var(--danger); color: white; }
+        .modal-body { padding: 26px; }
+        .modal-body textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-family: 'Inter', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            resize: vertical;
+        }
+        .modal-body textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .modal-body input, .modal-body select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        .modal-body input:focus, .modal-body select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .modal-footer {
+            padding: 20px 26px;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .modal-footer button {
+            padding: 10px 28px;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .modal-footer button:first-child {
+            background: var(--border-light);
+            color: var(--text-secondary);
+        }
+        .modal-footer button:first-child:hover {
+            background: var(--text-muted);
+            color: white;
+        }
+        .modal-footer button:last-child {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+        }
+        .modal-footer button:last-child:hover {
+            transform: scale(0.98);
+        }
+
+        .alert {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--accent);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 1100;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== CAPTURING MODE CORRIGIDO - TABELA HORIZONTAL ========== */
+        body.capturing .edit-badge,
+        body.capturing .edit-menu-btn,
+        body.capturing .action-btn,
+        body.capturing .menu-btn,
+        body.capturing .user-avatar,
+        body.capturing .delete-icon,
+        body.capturing .status-badge,
+        body.capturing .editable,
+        body.capturing .editable-cell-equipe,
+        body.capturing .status-pill-equipe,
+        body.capturing .sidebar,
+        body.capturing .dark-mode-toggle {
+            display: none !important;
+        }
+        
+        /* Força a tabela a manter o layout HORIZONTAL durante a captura */
+        body.capturing .table-wrapper {
+            overflow-x: visible !important;
+            overflow-y: visible !important;
+        }
+        
+        body.capturing table,
+        body.capturing #systemsTable {
+            display: table !important;
+            width: 100% !important;
+            table-layout: fixed !important;
+            border-collapse: collapse !important;
+        }
+        
+        body.capturing #systemsTable thead,
+        body.capturing #systemsTable tbody,
+        body.capturing #systemsTable tr {
+            display: table-row-group !important;
+        }
+        
+        body.capturing #systemsTable tr {
+            display: table-row !important;
+        }
+        
+        body.capturing #systemsTable th,
+        body.capturing #systemsTable td {
+            display: table-cell !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            background: var(--bg-card) !important;
+            color: var(--text-primary) !important;
+            padding: 10px 8px !important;
+            border-bottom: 1px solid var(--border-light) !important;
+        }
+        
+        body.capturing #systemsTable th {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark)) !important;
+            color: white !important;
+        }
+        
+        body.capturing .info-value {
+            background: transparent !important;
+            color: var(--text-primary) !important;
+            cursor: default !important;
+        }
+        
+        body.capturing .cftv-card,
+        body.capturing .status-card,
+        body.capturing .chart-container,
+        body.capturing .highlights,
+        body.capturing .observations {
+            background: var(--bg-card) !important;
+        }
+        
+        body.capturing .cftv-section {
+            background: var(--accent-light) !important;
+        }
+        
+        body.capturing img[src*="data:image"] {
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .header { flex-direction: column; text-align: center; }
+            .info-line { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .cftv-grid { flex-direction: column; gap: 12px; }
+            .status-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .sidebar { width: 100%; right: -100%; }
+            .toolbar { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="dashboardContainer">
+    <div class="header">
+        <div class="logo-area"><img src="https://i.imgur.com/zCPScGF.png" alt="Via Appia" style="height: 38px;"></div>
+        <div class="title-area">
+            <h1>🎯 INFORMATIVO GERENCIAL</h1>
+            <div class="subtitle">Rodoanel Mário Covas - SP 021 - Trecho Norte</div>
+        </div>
+        <div class="top-actions">
+            <div class="user-avatar" data-tooltip="Operador CCO">👤</div>
+            <div class="weather-mini" id="weatherMini">🌡️ --°C</div>
+            <button class="menu-btn" id="menuBtn" data-tooltip="Menu lateral">☰ MENU</button>
+        </div>
+    </div>
+
+    <div class="info-line">
+        <div class="info-item"><div class="info-label">DATA</div><div class="info-value" id="dataValue" data-tooltip="Clique para editar" onclick="editField('dataValue', 'Editar Data')">📅 12/05/2026<br>TERÇA-FEIRA</div></div>
+        <div class="info-item"><div class="info-label">PERÍODO</div><div class="info-value" id="periodoValue" data-tooltip="Clique para editar" onclick="editField('periodoValue', 'Editar Período')">⏰ 06h às 18h</div></div>
+        <div class="info-item"><div class="info-label">TURNO</div><div class="info-value" id="turnoValue" data-tooltip="Clique para editar" onclick="editField('turnoValue', 'Editar Turno')">🔄 A</div></div>
+        <div class="info-item"><div class="info-label">ATUALIZADO</div><div class="info-value" id="lastUpdate">✓ --:--:--</div></div>
+    </div>
+
+    <div class="cftv-section">
+        <div class="cftv-title">
+            <span>📹 CFTV – 58 câmeras</span>
+            <button class="edit-badge" data-tooltip="Editar status das câmeras" onclick="editCftv()">✏️ Editar status</button>
+        </div>
+        <div class="cftv-grid" id="cftvGrid"></div>
+        <div class="cftv-bar" id="cftvBar"></div>
+        <div class="cftv-legend">
+            <span style="background:var(--success); display:inline-block; width:12px; height:12px; border-radius:50%;"></span> Funcionando
+            <span style="background:var(--warning); display:inline-block; width:12px; height:12px; border-radius:50%;"></span> Com problemas
+            <span style="background:var(--danger); display:inline-block; width:12px; height:12px; border-radius:50%;"></span> Inoperantes
+        </div>
+    </div>
+
+    <div class="status-grid" id="statusGrid"></div>
+    <div class="chart-container"><canvas id="statusChart"></canvas></div>
+
+    <div class="section">
+        <div class="section-title">📌 DESTAQUES DO PERÍODO <button class="edit-badge" data-tooltip="Editar texto dos destaques" onclick="editHighlights()">✏️ Editar</button></div>
+        <div class="highlights" id="highlightsText"></div>
+    </div>
+
+    <div class="toolbar">
+        <button class="action-btn" data-tooltip="Adicionar novo sistema" onclick="addSystem()">➕ Adicionar sistema</button>
+        <button class="action-btn" data-tooltip="Mostrar/ocultar observações" onclick="toggleObservacoesSec()">📝 Observações</button>
+        <button class="action-btn" data-tooltip="Compartilhar link com dados atuais" onclick="shareDashboard()">🔗 Compartilhar</button>
+        <button class="action-btn" data-tooltip="Exportar como imagem PNG" onclick="exportImage()">📸 Exportar imagem</button>
+    </div>
+
+    <div class="section">
+        <div class="section-title">📋 STATUS E HORÁRIO DOS TESTES <button class="edit-badge" data-tooltip="Adicionar novo horário de teste" onclick="addTest()">⏰ Adicionar teste</button></div>
+        <div class="table-wrapper">
+            <table id="systemsTable">
+                <thead><tr><th>SISTEMA</th><th>STATUS</th><th>1º TESTE</th><th>2º TESTE</th><th>OBSERVAÇÃO</th><th></th></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section" id="obsSection">
+        <div class="section-title">📝 OBSERVAÇÕES GERAIS <button class="edit-badge" data-tooltip="Editar observações gerais" onclick="editObservacoes()">✏️ Editar</button></div>
+        <div class="observations" id="observacoesText"></div>
+    </div>
+
+    <div class="footer">🔐 SEGURANÇA, TECNOLOGIA E EFICIÊNCIA — TRABALHANDO POR UMA RODOVIA MAIS SEGURA</div>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3 style="font-size:16px;">☰ MENU OPERACIONAL</h3>
+        <button class="close-sidebar" id="closeSidebar">&times;</button>
+    </div>
+    <div class="sidebar-tabs">
+        <button class="tab-btn active" data-tab="ocorrencias">📊 Ocorrências</button>
+        <button class="tab-btn" data-tab="vdm">📈 VDM</button>
+        <button class="tab-btn" data-tab="equipe">👥 Equipe</button>
+        <button class="tab-btn" data-tab="links">🔗 Links</button>
+        <button class="tab-btn" data-tab="contatos">📞 Contatos</button>
+        <button class="tab-btn" data-tab="config">⚙️ Configurações</button>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab-ocorrencias"><div id="ocorrenciasList"></div></div>
+        <div class="tab-pane" id="tab-vdm"><div id="vdmList"></div></div>
+        <div class="tab-pane" id="tab-equipe"><div id="equipeListContainer"></div><button class="edit-menu-btn" data-tooltip="Editar escala da equipe (formato texto)" onclick="openModalEditar('equipe')">✏️ Editar em massa</button></div>
+        <div class="tab-pane" id="tab-links"><div id="linksList"></div></div>
+        <div class="tab-pane" id="tab-contatos"><div id="contatosList"></div></div>
+        <div class="tab-pane" id="tab-config">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
+                <span>🌙 Modo escuro</span>
+                <button id="darkModeToggleSidebar" class="edit-menu-btn" data-tooltip="Alternar tema claro/escuro">Ativar</button>
+            </div>
+            <hr style="margin:15px 0; border-color: var(--border-light);">
+            <p style="font-size:0.7rem; color:var(--text-muted);">Atalhos: Ctrl+Z = desfazer</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DADOS PRINCIPAIS
+    let cftvData = { funcionando: 42, comProblemas: 12, inoperantes: 4, total: 58 };
+    let systems = {
+        "0800": { status: "Funcionando", obs: "", t1: "09h58", t2: "15h47" },
+        "CFTV": { status: "Parcialmente", obs: "42 OK, 12 prob, 4 inop", t1: "16h09", t2: "–" },
+        "CALL BOX - Túnel": { status: "Funcionando", obs: "", t1: "09h10", t2: "–" },
+        "SOS": { status: "Funcionando", obs: "", t1: "09h16", t2: "15h46" },
+        "SAT": { status: "Funcionando", obs: "", t1: "–", t2: "–" },
+        "TOTEM": { status: "Funcionando", obs: "SEM IMAGEM", t1: "06h43", t2: "15h45", imagem: null }
+    };
+    let destaques = [
+        "✅ Todos os sistemas em funcionamento, exceto 1 parcial.",
+        "⚠️ CFTV: 42/58 câmeras funcionando.",
+        "🕒 Previsão de normalização às 14h.",
+        "🔧 Manutenção em campo."
+    ];
+    let observacoesGerais = [
+        "Rompimento de fibra por vandalismo (07/05 20:40).",
+        "58 câmeras: 42 OK, 12 problemas, 4 inop.",
+        "Evento TO15 N°12 aberto. Aguardando retorno."
+    ];
+    let historyStack = [];
+    let chart = null;
+
+    let equipeData = [
+        { funcao: "Operador CCO", nome: "Ingrid Sales", turno: "Diurno", veiculo: "CCO", status: "active", obs: "" },
+        { funcao: "Operador CCO", nome: "Gabriel Henrique", turno: "Diurno", veiculo: "CCO", status: "active", obs: "" },
+        { funcao: "Supervisor de Tráfego", nome: "Luciano Santos", turno: "Diurno", veiculo: "SAU 2", status: "active", obs: "" },
+        { funcao: "Operador GL2621", nome: "Leonardo Elisbão", turno: "Diurno", veiculo: "SAU 1", status: "active", obs: "" },
+        { funcao: "Operador GL2622", nome: "", turno: "", veiculo: "VTR BAIXADA", status: "offline", obs: "Em Manutenção" },
+        { funcao: "Operador GL2623R", nome: "Silvio Badin", turno: "Diurno", veiculo: "SAU 2", status: "away", obs: "Sem operador" },
+        { funcao: "Operador CA2601", nome: "", turno: "", veiculo: "SAU 2", status: "offline", obs: "Sem operador" },
+        { funcao: "Operador CP2601", nome: "", turno: "", veiculo: "SAU 2", status: "offline", obs: "Sem operador" },
+        { funcao: "Operador GP2631", nome: "Samuel Nascimento", turno: "Diurno", veiculo: "SAU 2", status: "active", obs: "" },
+        { funcao: "Operador VO2601", nome: "", turno: "", veiculo: "VTR BAIXADA", status: "offline", obs: "Em Manutenção" },
+        { funcao: "Operador VO-RES", nome: "Luciano Santos", turno: "Diurno", veiculo: "SAU 2", status: "active", obs: "" },
+        { funcao: "Operador UR2602", nome: "Mauricio", turno: "Diurno", veiculo: "SAU 2", status: "active", obs: "Enfª Caimmy" },
+        { funcao: "Operador UR2603", nome: "", turno: "", veiculo: "SAU 2", status: "offline", obs: "Sem operador" },
+        { funcao: "Operador USA2601", nome: "Leonardo", turno: "Diurno", veiculo: "SAU 1", status: "active", obs: "Enfª Fabrício Drº Mégda" }
+    ];
+
+    let sidebarStore = {
+        ocorrencias: [
+            "Animal na Pista;2", "Objeto na Pista;4", "Obras na Rodovia;5", "Atendimento Clínico;1",
+            "Estacionamento Indevido;1", "Outros;11", "Conservação;1", "Inspeção no Trecho;3",
+            "Pane Mecânica;3", "Pneu Furado;2", "Pane Seca;2", "Superaquecimento;1"
+        ],
+        vdm: { interna: 7015, externa: 6885, total: 13900 },
+        links: [
+            "SHEMPO;http://179.127.27.24:10030/18/login;CCO_PSSerra;********",
+            "SAT;http://vm-sat-ssperra:8080/sat_viasperra/ControlLogin#;CCOSPSerra;********",
+            "SOS;https://sos.psserra.com.br/login;leandro.almeida;********",
+            "MITS;http://200.144.26.184/mits/Login.aspx;h.leitao;********",
+            "Suporte;https://k1000.trisol.com.br/;Security - cameras;********",
+            "Security;192.168.110.20;cco.spserra@viaappia.com.br;Security",
+            "Totem SAU1;;CCC.SPSERRA;", "PC;;Appia@2024;Appia@2024"
+        ],
+        contatos_emergencia: [
+            "AMBIPAR;0800 117 2020", "CETESB;0800 500 1350", "Artesp;0800 727 83 77", "DER;0800 055 55 10",
+            "Defesa Civil Guarulhos;(11) 2461-9286", "Defesa Civil Arujá;(11) 4655-1425", "Bombeiro;199", "PMR/PM;190"
+        ],
+        contatos_concessionarias: [
+            "AUTOBAN;0800 055 55 50", "MOTIVA;0800 283 0381", "AUTOVIAS;0800 707 90 00",
+            "CART;0800 773 00 90", "CENTROVIAS;0800 178 98 98", "COLINAS;0800 703 50 80",
+            "ECOPISTAS;0800 777 00 70", "ECOVIAS;0800 197 78 78", "ENTREVIAS;0800 300 03 33",
+            "INTERVIAS;0800 707 14 14", "RENOVIAS;0800 055 96 96", "RODOANEL OESTE;0800 773 66 99",
+            "RODOVIAS TIETÊ;0800 770 33 22", "ROTA DAS BANDEIRAS;0800 770 80 70", "SPMAR;0800 774 88 77",
+            "SPVIAS;0800 703 50 30", "TAMOIOS;0800 545 0000", "TEBE;0800 551 11 67",
+            "TRIÂNGULO SOL;0800 701 16 09", "VIAOESTE;0800 701 55 55", "VIARDONDO;0800 729 93 00", "CCR SPIRO;0800 0173536"
+        ]
+    };
+
+    function showMsg(msg) { let d = document.createElement("div"); d.className="alert"; d.innerText=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),2500); }
+    function pushHistory() { historyStack.push(JSON.parse(JSON.stringify({ cftvData, systems, destaques, observacoesGerais }))); if(historyStack.length>10) historyStack.shift(); }
+    function undoLast() { if(historyStack.length){ let last=historyStack.pop(); cftvData=last.cftvData; systems=last.systems; destaques=last.destaques; observacoesGerais=last.observacoesGerais; renderAll(); showMsg("↩️ Desfeito"); } else showMsg("Nada para desfazer"); }
+
+    function openBeautifulModal(title, content, onSave, isTextarea = true, placeholder = "") {
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-card">
+                <div class="modal-header"><h3>✏️ ${title}</h3><button class="modal-close">&times;</button></div>
+                <div class="modal-body">${isTextarea ? `<textarea id="modalTextarea" rows="12" placeholder="${placeholder}">${content}</textarea>` : `<input type="text" id="modalInput" value="${content}" placeholder="${placeholder}">`}</div>
+                <div class="modal-footer"><button class="btn-cancel">Cancelar</button><button class="btn-save">Salvar</button></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const input = modal.querySelector(isTextarea ? '#modalTextarea' : '#modalInput');
+        input.focus();
+        modal.querySelector('.modal-close').onclick = () => modal.remove();
+        modal.querySelector('.btn-cancel').onclick = () => modal.remove();
+        modal.querySelector('.btn-save').onclick = () => { onSave(input.value); modal.remove(); };
+        modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+    }
+
+    function editOcorrenciaItem(index) {
+        const [tipo, qtde] = sidebarStore.ocorrencias[index].split(';');
+        openBeautifulModal(`Editar Ocorrência - ${tipo}`, qtde, (novoValor) => {
+            const novaQtde = parseInt(novoValor);
+            if (!isNaN(novaQtde) && novaQtde >= 0) {
+                sidebarStore.ocorrencias[index] = `${tipo};${novaQtde}`;
+                saveSidebar(); renderSidebar();
+                showMsg(`✅ ${tipo} atualizado`);
+            } else showMsg("❌ Valor inválido", true);
+        }, false, "Digite a quantidade");
+    }
+
+    function editVDMItem(tipo) {
+        const label = tipo === 'interna' ? 'VDM Interna' : 'VDM Externa';
+        openBeautifulModal(`Editar ${label}`, sidebarStore.vdm[tipo], (novoValor) => {
+            const novaQtde = parseInt(novoValor);
+            if (!isNaN(novaQtde) && novaQtde >= 0) {
+                sidebarStore.vdm[tipo] = novaQtde;
+                sidebarStore.vdm.total = sidebarStore.vdm.interna + sidebarStore.vdm.externa;
+                saveSidebar(); renderSidebar();
+                showMsg(`✅ ${label} atualizado`);
+            } else showMsg("❌ Valor inválido", true);
+        }, false, "Digite o volume");
+    }
+
+    function editLinkItem(index) {
+        const [nome, url, login, senha] = sidebarStore.links[index].split(';');
+        const currentData = `Nome: ${nome}\nURL: ${url}\nLogin: ${login}\nSenha: ${senha}`;
+        openBeautifulModal(`Editar Link - ${nome}`, currentData, (novoTexto) => {
+            const lines = novoTexto.split('\n');
+            let novoNome = nome, novaUrl = url, novoLogin = login, novaSenha = senha;
+            for (let line of lines) {
+                if (line.toLowerCase().startsWith('nome:')) novoNome = line.substring(5).trim();
+                if (line.toLowerCase().startsWith('url:')) novaUrl = line.substring(4).trim();
+                if (line.toLowerCase().startsWith('login:')) novoLogin = line.substring(6).trim();
+                if (line.toLowerCase().startsWith('senha:')) novaSenha = line.substring(6).trim();
+            }
+            sidebarStore.links[index] = `${novoNome};${novaUrl};${novoLogin};${novaSenha}`;
+            saveSidebar(); renderSidebar();
+            showMsg(`✅ Link ${novoNome} atualizado`);
+        }, true, "Edite os dados");
+    }
+
+    function editContatoEmergencia(index) {
+        const [nome, telefone] = sidebarStore.contatos_emergencia[index].split(';');
+        openBeautifulModal(`Editar Contato - ${nome}`, telefone, (novoValor) => {
+            sidebarStore.contatos_emergencia[index] = `${nome};${novoValor}`;
+            saveSidebar(); renderSidebar();
+            showMsg(`✅ ${nome} atualizado`);
+        }, false, "Digite o telefone");
+    }
+
+    function editContatoConcessionaria(index) {
+        const [nome, telefone] = sidebarStore.contatos_concessionarias[index].split(';');
+        openBeautifulModal(`Editar Concessionária - ${nome}`, telefone, (novoValor) => {
+            sidebarStore.contatos_concessionarias[index] = `${nome};${novoValor}`;
+            saveSidebar(); renderSidebar();
+            showMsg(`✅ ${nome} atualizado`);
+        }, false, "Digite o telefone");
+    }
+
+    function editEquipeField(index, field, type, element) {
+        pushHistory();
+        if (type === "status") {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-card">
+                    <div class="modal-header"><h3>✏️ Alterar Status</h3><button class="modal-close">&times;</button></div>
+                    <div class="modal-body"><select id="statusSelect" style="width:100%; padding:14px; border-radius:16px;"><option value="active">🟢 Ativo</option><option value="away">🟡 Ausente</option><option value="offline">🔴 Indisponível</option></select></div>
+                    <div class="modal-footer"><button class="btn-cancel">Cancelar</button><button class="btn-save">Salvar</button></div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.querySelector('#statusSelect').value = equipeData[index].status;
+            modal.querySelector('.modal-close').onclick = () => modal.remove();
+            modal.querySelector('.btn-cancel').onclick = () => modal.remove();
+            modal.querySelector('.btn-save').onclick = () => {
+                equipeData[index].status = modal.querySelector('#statusSelect').value;
+                saveEquipe(); renderEquipe();
+                modal.remove(); showMsg("✅ Status atualizado");
+            };
+            return;
+        }
+        const fieldLabels = { funcao: "Função", nome: "Nome", turno: "Turno", veiculo: "Veículo" };
+        openBeautifulModal(`Editar ${fieldLabels[field]}`, equipeData[index][field], (novoValor) => {
+            equipeData[index][field] = novoValor;
+            saveEquipe(); renderEquipe();
+            showMsg(`✅ ${fieldLabels[field]} atualizado`);
+        }, false, `Digite o ${fieldLabels[field].toLowerCase()}`);
+    }
+
+    function openModalEditar(tipo) {
+        if (tipo === 'equipe') {
+            function equipeToText() { return equipeData.map(m => `${m.funcao};${m.nome};${m.turno};${m.veiculo};${m.status};${m.obs || ''}`).join('\n'); }
+            function textToEquipe(text) {
+                const lines = text.split('\n').filter(l => l.trim());
+                const novaEquipe = [];
+                for (let line of lines) {
+                    const parts = line.split(';');
+                    if (parts.length >= 4) novaEquipe.push({ funcao: parts[0]||'', nome: parts[1]||'', turno: parts[2]||'', veiculo: parts[3]||'', status: parts[4]||'active', obs: parts[5]||'' });
+                }
+                return novaEquipe;
+            }
+            openBeautifulModal('👥 Editar Equipe (Em Massa)\nFormato: função;nome;turno;veículo;status;obs', equipeToText(), (novoTexto) => {
+                equipeData = textToEquipe(novoTexto);
+                saveEquipe(); renderEquipe();
+                showMsg('✅ Equipe atualizada');
+            }, true, "função;nome;turno;veículo;status;obs");
+        }
+    }
+
+    function saveEquipe() { localStorage.setItem("equipeData", JSON.stringify(equipeData)); }
+    function loadEquipe() { let saved = localStorage.getItem("equipeData"); if(saved) equipeData = JSON.parse(saved); }
+
+    function renderEquipe() {
+        let html = `<table class="equipe-table"><thead><tr><th>Função</th><th>Nome / Observação</th><th>Turno</th><th>Veículo</th><th>Status</th></tr></thead><tbody>`;
+        for (let i = 0; i < equipeData.length; i++) {
+            const m = equipeData[i];
+            let statusText = '', statusColor = '';
+            if (m.status === 'active') { statusText = '🟢 Ativo'; statusColor = 'active'; }
+            else if (m.status === 'away') { statusText = '🟡 Ausente'; statusColor = 'away'; }
+            else { statusText = '🔴 Indisponível'; statusColor = 'offline'; }
+            let nomeExib = m.nome || '-';
+            let obsExib = m.obs ? `<br><span style="font-size:0.65rem; color:var(--text-muted);">${m.obs}</span>` : '';
+            html += `<tr>
+                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'funcao', 'text', this)">${m.funcao}</span></td>
+                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'nome', 'text', this)">${nomeExib}</span>${obsExib}</td>
+                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'turno', 'text', this)">${m.turno || '-'}</span></td>
+                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'veiculo', 'text', this)">${m.veiculo}</span></td>
+                <td><span class="status-pill-equipe ${statusColor}" onclick="editEquipeField(${i}, 'status', 'status', this)">${statusText}</span></td>
+            </tr>`;
+        }
+        html += `</tbody></table>`;
+        document.getElementById("equipeListContainer").innerHTML = html;
+    }
+
+    function renderCftv() {
+        let pFunc = Math.round(cftvData.funcionando/58*100), pProb = Math.round(cftvData.comProblemas/58*100), pInop = Math.round(cftvData.inoperantes/58*100);
+        document.getElementById("cftvGrid").innerHTML = `
+            <div class="cftv-card"><div>✅ FUNCIONANDO</div><div class="number" style="color:var(--success)">${cftvData.funcionando}</div><div>${pFunc}%</div></div>
+            <div class="cftv-card"><div>⚠️ COM PROBLEMAS</div><div class="number" style="color:var(--warning)">${cftvData.comProblemas}</div><div>${pProb}%</div></div>
+            <div class="cftv-card"><div>❌ INOPERANTES</div><div class="number" style="color:var(--danger)">${cftvData.inoperantes}</div><div>${pInop}%</div></div>
+        `;
+        document.getElementById("cftvBar").innerHTML = `<div class="cftv-bar-func" style="width:${pFunc}%;">${pFunc}%</div><div class="cftv-bar-parc" style="width:${pProb}%;">${pProb}%</div><div class="cftv-bar-inop" style="width:${pInop}%;">${pInop}%</div>`;
+        systems["CFTV"].obs = `${cftvData.funcionando} OK, ${cftvData.comProblemas} prob, ${cftvData.inoperantes} inop`;
+    }
+
+    function renderStatusCards() {
+        let total = Object.keys(systems).length, cnt = { Funcionando:0, Parcialmente:0, Inoperante:0 };
+        for(let s in systems) cnt[systems[s].status]++;
+        let pf = Math.round(cnt.Funcionando/total*100)||0, pp = Math.round(cnt.Parcialmente/total*100)||0, pi = Math.round(cnt.Inoperante/total*100)||0;
+        document.getElementById("statusGrid").innerHTML = `
+            <div class="status-card"><div>🟢 FUNCIONANDO</div><div class="status-value" style="color:var(--success)">${pf}%</div><div>${cnt.Funcionando} sistemas</div></div>
+            <div class="status-card"><div>⚠️ PARCIALMENTE</div><div class="status-value" style="color:var(--warning)">${pp}%</div><div>${cnt.Parcialmente} sistemas</div></div>
+            <div class="status-card"><div>❌ INOPERANTE</div><div class="status-value" style="color:var(--danger)">${pi}%</div><div>${cnt.Inoperante} sistemas</div></div>
+            <div class="status-card"><div>📊 TOTAL</div><div class="status-value">100%</div><div>${total} sistemas</div></div>
+        `;
+        if(chart) chart.destroy();
+        chart = new Chart(document.getElementById("statusChart"), {
+            type: "bar",
+            data: { labels: ["Funcionando","Parcialmente","Inoperante"], datasets: [{ label: "Sistemas", data: [cnt.Funcionando, cnt.Parcialmente, cnt.Inoperante], backgroundColor: ["#10b981","#f59e0b","#ef4444"] }] },
+            options: { responsive: true, maintainAspectRatio: true }
+        });
+    }
+
+    function renderTable() {
+        let tbody = document.getElementById("tableBody");
+        tbody.innerHTML = "";
+        for(let sys in systems){
+            let styleStatus = systems[sys].status === "Funcionando" ? "background:var(--success-light); color:#065f46;" : (systems[sys].status === "Parcialmente" ? "background:var(--warning-light); color:#92400e;" : "background:var(--danger-light); color:#991b1b;");
+            let obsCell = "";
+            if (sys === "TOTEM" && systems[sys].imagem) {
+                obsCell = `<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <img src="${systems[sys].imagem}" style="width:50px; height:50px; object-fit:cover; border-radius:8px; cursor:pointer;" onclick="viewImage('${systems[sys].imagem}')">
+                            <button class="edit-badge" onclick="addTotemImage()">📷 Trocar</button>
+                            <button class="edit-badge" onclick="removeTotemImage()">🗑️ Remover</button>
+                           </div>`;
+            } else if (sys === "TOTEM") {
+                obsCell = `<div><button class="edit-badge" onclick="addTotemImage()">📷 Adicionar Foto</button><br><span class="editable" data-sys="${sys}" data-field="obs" style="cursor:pointer;">${systems[sys].obs||"-"}</span></div>`;
+            } else {
+                obsCell = `<span class="editable" data-sys="${sys}" data-field="obs" style="cursor:pointer;">${systems[sys].obs||"-"}</span>`;
+            }
+            let row = tbody.insertRow();
+            row.innerHTML = `
+                <td><strong>${sys}</strong></td>
+                <td><span class="status-badge" style="${styleStatus}" onclick="editStatus('${sys}')">${systems[sys].status}</span></td>
+                <td class="editable" data-sys="${sys}" data-field="t1" style="cursor:pointer;">${systems[sys].t1}</span></td>
+                <td class="editable" data-sys="${sys}" data-field="t2" style="cursor:pointer;">${systems[sys].t2}</span></td>
+                <td>${obsCell}</span></td>
+                <td><span class="delete-icon" onclick="deleteSystem('${sys}')" data-tooltip="Remover sistema">🗑️</span></td>
+            `;
+        }
+        document.querySelectorAll('.editable').forEach(el => { 
+            el.onclick = (e) => { 
+                e.stopPropagation();
+                const sys = el.dataset.sys; 
+                const field = el.dataset.field; 
+                if(sys && field) editTestTime(sys, field, el); 
+            }; 
+        });
+    }
+
+    function renderAll() {
+        renderCftv(); renderStatusCards(); renderTable();
+        document.getElementById("highlightsText").innerHTML = destaques.map(d=>`<p>${d}</p>`).join("");
+        document.getElementById("observacoesText").innerHTML = observacoesGerais.map(o=>`<p>${o}</p>`).join("");
+        document.getElementById("lastUpdate").innerHTML = `✓ ${new Date().toLocaleTimeString("pt-BR")}`;
+        localStorage.setItem("dashboardMain", JSON.stringify({ cftvData, systems, destaques, observacoesGerais }));
+    }
+
+    function editField(id, title) { 
+        let el = document.getElementById(id); 
+        let val = el.innerText.replace(/[📅⏰🔄✓]/g, '').trim();
+        openBeautifulModal(title, val.replace(/<br>/g, '\n'), (novoValor) => {
+            let prefix = id === 'dataValue' ? '📅 ' : (id === 'periodoValue' ? '⏰ ' : (id === 'turnoValue' ? '🔄 ' : ''));
+            el.innerHTML = prefix + novoValor.replace(/\n/g, '<br>');
+            renderAll(); showMsg("✅ Atualizado");
+        });
+    }
+
+    function editCftv() { pushHistory(); openBeautifulModal('📹 Editar CFTV\nLinha 1: Funcionando\nLinha 2: Com problemas\nLinha 3: Inoperantes', `${cftvData.funcionando}\n${cftvData.comProblemas}\n${cftvData.inoperantes}`, (txt) => {
+        let lines = txt.split('\n').filter(l=>l.trim());
+        let f=parseInt(lines[0])||0, p=parseInt(lines[1])||0, i=parseInt(lines[2])||0;
+        if(f+p+i===58){ cftvData={funcionando:f, comProblemas:p, inoperantes:i, total:58}; renderAll(); showMsg("✅ Câmeras atualizadas"); }
+        else showMsg("❌ Soma deve ser 58");
+    }); }
+
+    function editHighlights() { pushHistory(); openBeautifulModal('📌 Editar Destaques', destaques.join('\n'), (txt) => { destaques = txt.split('\n').filter(l=>l.trim()); renderAll(); showMsg("✅ Destaques atualizados"); }); }
+    function editObservacoes() { pushHistory(); openBeautifulModal('📝 Editar Observações', observacoesGerais.join('\n'), (txt) => { observacoesGerais = txt.split('\n').filter(l=>l.trim()); renderAll(); showMsg("✅ Observações atualizadas"); }); }
+    function editStatus(sys) { pushHistory(); let modal=document.createElement('div'); modal.className='modal-overlay'; modal.innerHTML=`<div class="modal-card"><div class="modal-header"><h3>🔄 Status - ${sys}</h3><button class="modal-close">&times;</button></div><div class="modal-body"><select id="statusSelect" style="width:100%; padding:14px;"><option>Funcionando</option><option>Parcialmente</option><option>Inoperante</option></select></div><div class="modal-footer"><button class="btn-cancel">Cancelar</button><button class="btn-save">Salvar</button></div></div>`; document.body.appendChild(modal); modal.querySelector('#statusSelect').value=systems[sys].status; modal.querySelector('.modal-close').onclick=()=>modal.remove(); modal.querySelector('.btn-cancel').onclick=()=>modal.remove(); modal.querySelector('.btn-save').onclick=()=>{ systems[sys].status=modal.querySelector('#statusSelect').value; renderAll(); modal.remove(); showMsg("✅ Status atualizado"); }; }
+    function editTestTime(sys, field, el) { pushHistory(); openBeautifulModal(`⏰ Editar ${field==='t1'?'1º Teste':'2º Teste'} - ${sys}`, systems[sys][field], (novo)=>{ systems[sys][field]=novo; if(el) el.innerText=novo; renderAll(); showMsg("✅ Horário atualizado"); }, false, "Digite o horário (ex: 14h30)"); }
+    function addSystem() { pushHistory(); openBeautifulModal('➕ Adicionar Sistema', '', (nome)=>{ let name=nome.trim(); if(name && !systems[name]){ systems[name]={status:"Funcionando", obs:"", t1:"--:--", t2:"--:--", imagem:null}; renderAll(); showMsg(`✅ ${name} adicionado`); } else showMsg("❌ Inválido"); }, false, "Digite o nome do sistema"); }
+    function addTest() { pushHistory(); let modal=document.createElement('div'); modal.className='modal-overlay'; modal.innerHTML=`<div class="modal-card"><div class="modal-header"><h3>⏰ Adicionar Teste</h3><button class="modal-close">&times;</button></div><div class="modal-body"><input type="text" id="sysName" placeholder="Nome do sistema" style="width:100%; padding:14px; margin-bottom:12px;"><select id="testType" style="width:100%; padding:14px; margin-bottom:12px;"><option value="t1">1º Teste</option><option value="t2">2º Teste</option></select><input type="text" id="testTime" placeholder="Horário (ex: 14h30)" style="width:100%; padding:14px;"></div><div class="modal-footer"><button class="btn-cancel">Cancelar</button><button class="btn-save">Salvar</button></div></div>`; document.body.appendChild(modal); modal.querySelector('.modal-close').onclick=()=>modal.remove(); modal.querySelector('.btn-cancel').onclick=()=>modal.remove(); modal.querySelector('.btn-save').onclick=()=>{ let sys=modal.querySelector('#sysName').value.trim(); let tipo=modal.querySelector('#testType').value; let time=modal.querySelector('#testTime').value.trim(); if(sys && systems[sys] && time){ systems[sys][tipo]=time; renderAll(); modal.remove(); showMsg(`✅ Horário de ${sys}`); } else showMsg("❌ Sistema inválido"); }; }
+    function deleteSystem(sys) { if(confirm(`Remover "${sys}"?`)){ pushHistory(); delete systems[sys]; renderAll(); showMsg(`🗑️ ${sys} removido`); } }
+    
+    function addTotemImage() { 
+        let inp = document.createElement("input"); 
+        inp.type = "file"; 
+        inp.accept = "image/*"; 
+        inp.onchange = e => { 
+            let file = e.target.files[0]; 
+            if(file){ 
+                let rd = new FileReader(); 
+                rd.onload = ev => { 
+                    systems["TOTEM"].imagem = ev.target.result; 
+                    systems["TOTEM"].obs = "Foto anexada"; 
+                    renderAll(); 
+                    showMsg("✅ Foto adicionada ao TOTEM"); 
+                    localStorage.setItem("totemImage", ev.target.result);
+                }; 
+                rd.readAsDataURL(file); 
+            } 
+        }; 
+        inp.click(); 
+    }
+    
+    function removeTotemImage() {
+        if(confirm("Remover a foto do TOTEM?")) {
+            systems["TOTEM"].imagem = null;
+            systems["TOTEM"].obs = "SEM IMAGEM";
+            renderAll();
+            localStorage.removeItem("totemImage");
+            showMsg("🗑️ Foto removida");
+        }
+    }
+    
+    function loadTotemImageFromLocal() {
+        let saved = localStorage.getItem("totemImage");
+        if(saved && systems["TOTEM"]) {
+            systems["TOTEM"].imagem = saved;
+            systems["TOTEM"].obs = "Foto anexada";
+        }
+    }
+    
+    function viewImage(src) { 
+        let modal = document.createElement("div"); 
+        modal.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:3000; cursor:pointer;"; 
+        modal.onclick = () => modal.remove(); 
+        modal.innerHTML = `<img src="${src}" style="max-width:90%; max-height:90%; border-radius:20px;">`; 
+        document.body.appendChild(modal); 
+    }
+    
+    async function exportImage() { 
+        showMsg("Gerando imagem..."); 
+        try { 
+            document.body.classList.add("capturing"); 
+            await new Promise(r => setTimeout(r, 300)); 
+            const element = document.getElementById("dashboardContainer");
+            const canvas = await html2canvas(element, { 
+                scale: 2.5, 
+                backgroundColor: "#ffffff", 
+                useCORS: true, 
+                logging: false,
+                windowWidth: element.scrollWidth,
+                windowHeight: element.scrollHeight,
+                onclone: (clonedDoc, element) => {
+                    // Garante que a tabela no clone mantenha o layout horizontal
+                    const clonedTable = clonedDoc.getElementById("systemsTable");
+                    if(clonedTable) {
+                        clonedTable.style.display = "table";
+                        clonedTable.style.width = "100%";
+                        clonedTable.style.tableLayout = "fixed";
+                    }
+                }
+            }); 
+            let link = document.createElement("a"); 
+            link.download = `informativo_${new Date().toLocaleDateString("pt-BR").replace(/\//g, "-")}.png`; 
+            link.href = canvas.toDataURL(); 
+            link.click(); 
+            showMsg("✅ Imagem salva com sucesso"); 
+        } catch(e){ 
+            console.error(e);
+            showMsg("❌ Erro ao gerar imagem"); 
+        } finally { 
+            document.body.classList.remove("capturing"); 
+        } 
+    }
+    
+    function shareDashboard() { let data=JSON.stringify({cftvData,systems,destaques,observacoesGerais}); let encoded=btoa(encodeURIComponent(data)); let url=`${location.origin}${location.pathname}?data=${encoded}`; navigator.clipboard.writeText(url); showMsg("🔗 Link copiado"); }
+    function toggleObservacoesSec() { let sec=document.getElementById("obsSection"); sec.style.display=sec.style.display==="none"?"block":"none"; showMsg(sec.style.display==="block"?"📝 Visível":"📝 Oculto"); }
+
+    function renderSidebar() {
+        let ocorrHtml = sidebarStore.ocorrencias.map((l, idx) => { let [t,q]=l.split(";"); let val=parseInt(q); let level=val<=3?"low":(val<=10?"medium":"high"); return `<div class="occurrence-item" data-value="${level}" onclick="editOcorrenciaItem(${idx})"><span>${t}</span><span>${q}</span></div>`; }).join("");
+        document.getElementById("ocorrenciasList").innerHTML = ocorrHtml;
+        let vdm = sidebarStore.vdm;
+        document.getElementById("vdmList").innerHTML = `<div class="vdm-item" onclick="editVDMItem('interna')"><span>📥 VDM Interna</span><span>${vdm.interna.toLocaleString()}</span></div><div class="vdm-item" onclick="editVDMItem('externa')"><span>📤 VDM Externa</span><span>${vdm.externa.toLocaleString()}</span></div><div class="vdm-item" style="border-bottom:none; margin-top:8px; background:var(--accent-light); border-radius:12px;"><span><strong>📊 VDM Total</strong></span><span><strong>${vdm.total.toLocaleString()}</strong></span></div>`;
+        let linksHtml = sidebarStore.links.map((l, idx) => { let [nome,url,login,senha]=l.split(";"); return `<div class="link-item" onclick="editLinkItem(${idx})"><div class="link-title"><span>🔗</span> <strong>${nome}</strong></div><div style="font-size:0.7rem;">${url ? `🌐 ${url}<br>` : ""}👤 ${login}<br>🔒 ${senha}</div></div>`; }).join("");
+        document.getElementById("linksList").innerHTML = linksHtml;
+        let contEmerg = sidebarStore.contatos_emergencia.map((c, idx) => { let [n,t]=c.split(";"); return `<div class="contact-item" onclick="editContatoEmergencia(${idx})"><strong>🚨 ${n}</strong><br>📞 ${t}</div>`; }).join("");
+        let contConc = sidebarStore.contatos_concessionarias.map((c, idx) => { let [n,t]=c.split(";"); return `<div class="contact-item" onclick="editContatoConcessionaria(${idx})"><strong>🏢 ${n}</strong><br>📞 ${t}</div>`; }).join("");
+        document.getElementById("contatosList").innerHTML = `<h5 style="margin-bottom:12px;">🚨 EMERGÊNCIA</h5>${contEmerg}<h5 style="margin:20px 0 12px 0;">🏢 CONCESSIONÁRIAS</h5>${contConc}`;
+    }
+    
+    function saveSidebar() { localStorage.setItem("sidebarData", JSON.stringify(sidebarStore)); }
+    function loadSidebar() { let s = localStorage.getItem("sidebarData"); if(s) sidebarStore = JSON.parse(s); renderSidebar(); }
+
+    async function updateWeather() { try { let res=await fetch('https://wttr.in/SaoPaulo?format=%t+%c'); let txt=await res.text(); let temp=txt.match(/([+-]?\d+°C)/)?.[0]||"--°C"; let icon=txt.includes("☀️")?"☀️":txt.includes("🌧️")?"🌧️":txt.includes("☁️")?"☁️":"🌡️"; document.getElementById("weatherMini").innerHTML=`${icon} ${temp}`; } catch(e){ document.getElementById("weatherMini").innerHTML="🌡️ --°C"; } }
+
+    function initMenu() {
+        let sidebar=document.getElementById("sidebar"), menuBtn=document.getElementById("menuBtn"), closeSidebar=document.getElementById("closeSidebar");
+        menuBtn.onclick=()=>sidebar.classList.add("open");
+        closeSidebar.onclick=()=>sidebar.classList.remove("open");
+        document.querySelectorAll(".tab-btn").forEach(btn=>{ btn.onclick=()=>{ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); document.querySelectorAll(".tab-pane").forEach(p=>p.classList.remove("active")); document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active"); }; });
+        let darkToggle=document.getElementById("darkModeToggleSidebar");
+        darkToggle.onclick=()=>{ document.body.classList.toggle("dark"); darkToggle.innerText=document.body.classList.contains("dark")?"Desativar":"Ativar"; };
+    }
+
+    updateWeather(); setInterval(updateWeather, 600000);
+    initMenu();
+    document.addEventListener("keydown", (e)=>{ if(e.ctrlKey && e.key==='z'){ e.preventDefault(); undoLast(); } });
+
+    function loadMainLocal() { let saved=localStorage.getItem("dashboardMain"); if(saved){ let d=JSON.parse(saved); cftvData=d.cftvData; systems=d.systems; destaques=d.destaques; observacoesGerais=d.observacoesGerais; renderAll(); } }
+    function loadFromUrl() { let params=new URLSearchParams(location.search); let enc=params.get("data"); if(enc){ try{ let data=JSON.parse(decodeURIComponent(atob(enc))); cftvData=data.cftvData; systems=data.systems; destaques=data.destaques; observacoesGerais=data.observacoesGerais; renderAll(); showMsg("📀 Dados carregados do link"); } catch(e){} } }
+
+    loadEquipe();
+    loadMainLocal(); 
+    loadFromUrl(); 
+    loadSidebar(); 
+    loadTotemImageFromLocal();
+    renderEquipe();
+    renderAll();
+    setInterval(()=>document.getElementById("lastUpdate").innerHTML = `✓ ${new Date().toLocaleTimeString("pt-BR")}`, 1000);
+    
+    window.editOcorrenciaItem = editOcorrenciaItem;
+    window.editVDMItem = editVDMItem;
+    window.editLinkItem = editLinkItem;
+    window.editContatoEmergencia = editContatoEmergencia;
+    window.editContatoConcessionaria = editContatoConcessionaria;
+    window.editEquipeField = editEquipeField;
+    window.editCftv = editCftv;
+    window.editHighlights = editHighlights;
+    window.editObservacoes = editObservacoes;
+    window.editStatus = editStatus;
+    window.editTestTime = editTestTime;
+    window.addSystem = addSystem;
+    window.addTest = addTest;
+    window.deleteSystem = deleteSystem;
+    window.addTotemImage = addTotemImage;
+    window.removeTotemImage = removeTotemImage;
+    window.viewImage = viewImage;
+    window.exportImage = exportImage;
+    window.shareDashboard = shareDashboard;
+    window.toggleObservacoesSec = toggleObservacoesSec;
+    window.editField = editField;
+    window.openModalEditar = openModalEditar;
+</script>
+</body>
+</html>
