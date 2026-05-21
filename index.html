@@ -8,52 +8,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg-primary: #f1f5f9;
-            --bg-card: rgba(255, 255, 255, 0.95);
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --border-light: rgba(226, 232, 240, 0.8);
-            --accent: #006C5E;
-            --accent-dark: #005a4e;
-            --accent-light: rgba(0, 108, 94, 0.1);
-            --accent-glow: rgba(0, 108, 94, 0.2);
-            --success: #10b981;
-            --success-light: rgba(16, 185, 129, 0.15);
-            --warning: #f59e0b;
-            --warning-light: rgba(245, 158, 11, 0.15);
-            --danger: #ef4444;
-            --danger-light: rgba(239, 68, 68, 0.15);
-            --sidebar-bg: rgba(255, 255, 255, 0.95);
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 20px 35px -8px rgba(0, 0, 0, 0.1);
-            --radius-sm: 12px;
-            --radius-md: 16px;
-            --radius-lg: 20px;
-            --radius-xl: 24px;
+            --bg-primary: #f1f5f9; --bg-card: #ffffff; --text-primary: #0f172a; --text-secondary: #475569;
+            --text-muted: #64748b; --border-light: #e2e8f0; --accent: #006C5E; --accent-dark: #005a4e;
+            --accent-light: rgba(0, 108, 94, 0.08); --accent-glow: rgba(0, 108, 94, 0.2);
+            --success: #10b981; --success-light: #d1fae5; --warning: #f59e0b; --warning-light: #fef3c7;
+            --danger: #ef4444; --danger-light: #fee2e2; --sidebar-bg: #ffffff; --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08); --shadow-lg: 0 20px 35px -8px rgba(0,0,0,0.1);
+            --radius-sm: 12px; --radius-md: 16px; --radius-lg: 20px; --radius-xl: 24px;
         }
 
         body.dark {
-            --bg-primary: #0f172a;
-            --bg-card: rgba(30, 41, 59, 0.95);
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --border-light: rgba(51, 65, 85, 0.8);
-            --accent-light: rgba(0, 108, 94, 0.15);
-            --sidebar-bg: rgba(30, 41, 59, 0.95);
+            --bg-primary: #0f172a; --bg-card: #1e293b; --text-primary: #f1f5f9; --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8; --border-light: #334155; --accent-light: rgba(0, 108, 94, 0.15);
+            --sidebar-bg: #1e293b; --success-light: #064e3b; --warning-light: #78350f; --danger-light: #7f1d1d;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             padding: 24px;
             min-height: 100vh;
@@ -67,7 +41,6 @@
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-lg);
             overflow: hidden;
-            transition: all 0.3s ease;
             border: 1px solid var(--border-light);
         }
 
@@ -80,70 +53,20 @@
             flex-wrap: wrap;
             gap: 16px;
         }
-        .logo-area img {
-            height: 44px;
-            background: white;
-            border-radius: var(--radius-sm);
-            padding: 6px 14px;
-            object-fit: contain;
-        }
+        .logo-area img { height: 44px; background: white; border-radius: var(--radius-sm); padding: 6px 14px; object-fit: contain; }
         .title-area { text-align: center; }
-        .title-area h1 {
-            font-size: 1.35rem;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 4px;
-        }
-        .title-area .subtitle {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.8);
-        }
+        .title-area h1 { font-size: 1.35rem; font-weight: 600; color: white; margin-bottom: 4px; }
+        .title-area .subtitle { font-size: 0.75rem; color: rgba(255,255,255,0.8); }
         .top-actions { display: flex; align-items: center; gap: 12px; }
         
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .user-avatar:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
+        .user-avatar { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: white; cursor: pointer; transition: all 0.2s; }
+        .user-avatar:hover { background: rgba(255,255,255,0.3); transform: scale(1.05); }
         
-        .weather-mini {
-            background: rgba(255,255,255,0.15);
-            border-radius: 40px;
-            padding: 6px 14px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: white;
-        }
-        .menu-btn {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 40px;
-            padding: 6px 16px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: white;
-            transition: all 0.2s;
-        }
-        .menu-btn:hover {
-            background: rgba(255,255,255,0.25);
-        }
+        .weather-mini { background: rgba(255,255,255,0.15); border-radius: 40px; padding: 6px 14px; font-size: 0.85rem; font-weight: 500; color: white; }
+        .menu-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius: 40px; padding: 6px 16px; cursor: pointer; font-size: 1.2rem; color: white; transition: all 0.2s; }
+        .menu-btn:hover { background: rgba(255,255,255,0.25); }
 
-        [data-tooltip] {
-            position: relative;
-            cursor: pointer;
-        }
+        [data-tooltip] { position: relative; cursor: pointer; }
         [data-tooltip]:before {
             content: attr(data-tooltip);
             position: absolute;
@@ -162,10 +85,7 @@
             transition: all 0.2s;
             margin-bottom: 8px;
         }
-        [data-tooltip]:hover:before {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-4px);
-        }
+        [data-tooltip]:hover:before { opacity: 1; transform: translateX(-50%) translateY(-4px); }
 
         .info-line {
             display: grid;
@@ -173,30 +93,13 @@
             text-align: center;
             padding: 16px 0;
             border-bottom: 1px solid var(--border-light);
-            background: transparent;
         }
-        .info-label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
+        .info-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); }
         .info-value {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--accent);
-            cursor: pointer;
-            display: inline-block;
-            background: var(--accent-light);
-            padding: 4px 14px;
-            border-radius: 40px;
-            margin-top: 6px;
-            transition: all 0.2s;
+            font-size: 0.85rem; font-weight: 600; color: var(--accent); cursor: pointer; display: inline-block;
+            background: var(--accent-light); padding: 4px 14px; border-radius: 40px; margin-top: 6px; transition: all 0.2s;
         }
-        .info-value:hover {
-            background: var(--accent);
-            color: white;
-        }
+        .info-value:hover { background: var(--accent); color: white; }
 
         .cftv-section {
             margin: 24px;
@@ -205,62 +108,20 @@
             padding: 20px;
             border: 1px solid var(--border-light);
         }
-        .cftv-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .cftv-title span {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--accent);
-            padding-left: 12px;
-            border-left: 3px solid var(--accent);
-        }
-        .cftv-grid {
-            display: flex;
-            gap: 20px;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
+        .cftv-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cftv-title span { font-size: 1rem; font-weight: 700; color: var(--accent); padding-left: 12px; border-left: 3px solid var(--accent); }
+        .cftv-grid { display: flex; gap: 20px; justify-content: space-between; margin-bottom: 20px; }
         .cftv-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-md);
-            padding: 20px 16px;
-            text-align: center;
-            flex: 1;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-light);
+            background: var(--bg-card); border-radius: var(--radius-md); padding: 20px 16px; text-align: center;
+            flex: 1; transition: all 0.3s ease; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light);
         }
-        .cftv-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-        }
-        .cftv-card .number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 8px 0;
-        }
-        .cftv-bar {
-            display: flex;
-            height: 32px;
-            border-radius: 30px;
-            overflow: hidden;
-            margin: 12px 0;
-        }
+        .cftv-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .cftv-card .number { font-size: 2.5rem; font-weight: 800; margin: 8px 0; }
+        .cftv-bar { display: flex; height: 32px; border-radius: 30px; overflow: hidden; margin: 12px 0; }
         .cftv-bar-func { background: var(--success); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600; }
         .cftv-bar-parc { background: var(--warning); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600; }
         .cftv-bar-inop { background: var(--danger); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 600; }
-        .cftv-legend {
-            display: flex;
-            justify-content: center;
-            gap: 28px;
-            margin-top: 12px;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+        .cftv-legend { display: flex; justify-content: center; gap: 28px; margin-top: 12px; font-size: 0.7rem; color: var(--text-muted); }
 
         .status-grid {
             display: grid;
@@ -269,22 +130,11 @@
             margin: 20px 24px;
         }
         .status-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            padding: 18px 12px;
-            text-align: center;
-            transition: all 0.3s ease;
+            background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md);
+            padding: 18px 12px; text-align: center; transition: all 0.3s ease;
         }
-        .status-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-        .status-value {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin: 6px 0;
-        }
+        .status-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .status-value { font-size: 2.2rem; font-weight: 800; margin: 6px 0; }
 
         .chart-container {
             margin: 0 24px 24px 24px;
@@ -306,27 +156,13 @@
             font-size: 0.9rem;
         }
         .edit-badge {
-            background: var(--accent-light);
-            border: none;
-            border-radius: 30px;
-            padding: 5px 16px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            cursor: pointer;
-            color: var(--accent);
-            transition: all 0.2s;
+            background: var(--accent-light); border: none; border-radius: 30px; padding: 5px 16px;
+            font-size: 0.7rem; font-weight: 500; cursor: pointer; color: var(--accent); transition: all 0.2s;
         }
-        .edit-badge:hover {
-            background: var(--accent);
-            color: white;
-        }
+        .edit-badge:hover { background: var(--accent); color: white; }
         .highlights, .observations {
-            padding: 18px 22px;
-            background: var(--accent-light);
-            border-radius: var(--radius-md);
-            font-size: 0.8rem;
-            line-height: 1.6;
-            color: var(--text-primary);
+            padding: 18px 22px; background: var(--accent-light); border-radius: var(--radius-md);
+            font-size: 0.8rem; line-height: 1.6; color: var(--text-primary);
         }
 
         .table-wrapper {
@@ -335,53 +171,21 @@
             border: 1px solid var(--border-light);
             background: var(--bg-card);
         }
-        table {
-            width: 100%;
-            font-size: 0.75rem;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-        th, td {
-            padding: 10px 8px;
-            border-bottom: 1px solid var(--border-light);
-            color: var(--text-primary);
-            text-align: left;
-            vertical-align: middle;
-        }
+        table { width: 100%; font-size: 0.75rem; border-collapse: collapse; }
         th {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: white;
-            font-weight: 600;
-            font-size: 0.7rem;
+            color: white; padding: 12px 12px; font-weight: 600; font-size: 0.7rem;
         }
-        /* Larguras fixas para cada coluna */
-        th:nth-child(1), td:nth-child(1) { width: 18%; }  /* SISTEMA */
-        th:nth-child(2), td:nth-child(2) { width: 15%; }  /* STATUS */
-        th:nth-child(3), td:nth-child(3) { width: 10%; }  /* 1º TESTE */
-        th:nth-child(4), td:nth-child(4) { width: 10%; }  /* 2º TESTE */
-        th:nth-child(5), td:nth-child(5) { width: 35%; }  /* OBSERVAÇÃO */
-        th:nth-child(6), td:nth-child(6) { width: 12%; }  /* AÇÃO */
-        
+        td { padding: 10px 12px; border-bottom: 1px solid var(--border-light); color: var(--text-primary); }
         tbody tr:hover { background: var(--accent-light); }
         .status-badge {
-            padding: 5px 14px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-block;
-            transition: all 0.2s;
-            font-size: 0.7rem;
+            padding: 5px 14px; border-radius: 30px; font-weight: 600; cursor: pointer;
+            display: inline-block; transition: all 0.2s; font-size: 0.7rem;
         }
         .status-badge:hover { transform: scale(1.03); }
 
-        .delete-icon {
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-block;
-        }
-        .delete-icon:hover {
-            transform: scale(1.15);
-        }
+        .delete-icon { cursor: pointer; transition: all 0.2s; display: inline-block; }
+        .delete-icon:hover { transform: scale(1.15); }
 
         .toolbar {
             display: flex;
@@ -390,254 +194,103 @@
             margin: 20px 24px;
         }
         .action-btn {
-            background: var(--accent-light);
-            border: none;
-            border-radius: 40px;
-            padding: 7px 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            color: var(--accent);
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            background: var(--accent-light); border: none; border-radius: 40px; padding: 7px 20px;
+            font-size: 0.75rem; font-weight: 500; cursor: pointer; color: var(--accent);
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
         }
-        .action-btn:hover {
-            background: var(--accent);
-            color: white;
-        }
+        .action-btn:hover { background: var(--accent); color: white; }
 
         .footer {
-            text-align: center;
-            padding: 18px;
-            background: var(--accent-light);
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 20px;
+            text-align: center; padding: 18px; background: var(--accent-light);
+            font-size: 0.7rem; color: var(--text-muted); margin-top: 20px;
         }
 
         .sidebar {
-            position: fixed;
-            top: 0;
-            right: -500px;
-            width: 500px;
-            height: 100%;
-            background: var(--sidebar-bg);
-            box-shadow: -4px 0 30px rgba(0,0,0,0.15);
-            z-index: 1000;
-            transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            display: flex;
-            flex-direction: column;
+            position: fixed; top: 0; right: -500px; width: 500px; height: 100%;
+            background: var(--sidebar-bg); box-shadow: -4px 0 30px rgba(0,0,0,0.15);
+            z-index: 1000; transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex; flex-direction: column;
         }
         .sidebar.open { right: 0; }
         .sidebar-header {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            padding: 18px 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
+            padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; color: white;
         }
-        .close-sidebar {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 26px;
-            cursor: pointer;
-        }
-        .sidebar-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border-light);
-        }
+        .close-sidebar { background: none; border: none; color: white; font-size: 26px; cursor: pointer; }
+        .sidebar-tabs { display: flex; border-bottom: 1px solid var(--border-light); }
         .tab-btn {
-            flex: 1;
-            padding: 14px 8px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            flex: 1; padding: 14px 8px; background: none; border: none; cursor: pointer;
+            font-size: 0.75rem; font-weight: 500; color: var(--text-muted); transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
         }
-        .tab-btn.active {
-            color: var(--accent);
-            border-bottom: 2px solid var(--accent);
-        }
-        .tab-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
+        .tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+        .tab-content { flex: 1; overflow-y: auto; padding: 20px; }
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
         
         .occurrence-item {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
+            padding: 12px 0; border-bottom: 1px solid var(--border-light);
+            display: flex; justify-content: space-between; font-size: 0.8rem;
+            cursor: pointer; transition: all 0.2s;
         }
-        .occurrence-item:hover {
-            background: var(--accent-light);
-            border-radius: 10px;
-            padding-left: 8px;
-            padding-right: 8px;
-        }
+        .occurrence-item:hover { background: var(--accent-light); border-radius: 10px; padding-left: 8px; padding-right: 8px; }
         .occurrence-item span:last-child {
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            font-weight: 700; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem;
         }
         .occurrence-item[data-value="low"] span:last-child { background: var(--success-light); color: var(--success); }
         .occurrence-item[data-value="medium"] span:last-child { background: var(--warning-light); color: var(--warning); }
         .occurrence-item[data-value="high"] span:last-child { background: var(--danger-light); color: var(--danger); }
         
         .vdm-item {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
+            padding: 12px 0; border-bottom: 1px solid var(--border-light);
+            display: flex; justify-content: space-between; font-size: 0.85rem;
+            cursor: pointer; transition: all 0.2s;
         }
-        .vdm-item:hover {
-            background: var(--accent-light);
-            border-radius: 10px;
-            padding-left: 8px;
-            padding-right: 8px;
-        }
+        .vdm-item:hover { background: var(--accent-light); border-radius: 10px; padding-left: 8px; padding-right: 8px; }
         .vdm-item span:last-child { font-weight: 700; color: var(--accent); }
         
-        .link-item {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-light);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .link-item:hover {
-            background: var(--accent-light);
-            border-radius: 10px;
-            padding-left: 8px;
-            padding-right: 8px;
-        }
+        .link-item { padding: 12px 0; border-bottom: 1px solid var(--border-light); cursor: pointer; transition: all 0.2s; }
+        .link-item:hover { background: var(--accent-light); border-radius: 10px; padding-left: 8px; padding-right: 8px; }
         .link-title { font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
         
-        .contact-item {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-light);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .contact-item:hover {
-            background: var(--accent-light);
-            border-radius: 10px;
-            padding-left: 8px;
-            padding-right: 8px;
-        }
+        .contact-item { padding: 12px 0; border-bottom: 1px solid var(--border-light); cursor: pointer; transition: all 0.2s; }
+        .contact-item:hover { background: var(--accent-light); border-radius: 10px; padding-left: 8px; padding-right: 8px; }
         .contact-item strong { color: var(--accent); }
         
-        .equipe-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.75rem;
-        }
-        .equipe-table th {
-            background: var(--accent-light);
-            color: var(--accent);
-            padding: 10px 8px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid var(--border-light);
-        }
-        .equipe-table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid var(--border-light);
-            color: var(--text-primary);
-        }
+        .equipe-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        .equipe-table th { background: var(--accent-light); color: var(--accent); padding: 10px 8px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border-light); }
+        .equipe-table td { padding: 10px 8px; border-bottom: 1px solid var(--border-light); color: var(--text-primary); }
         .equipe-table tr:hover { background: var(--accent-light); }
-        .status-operator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
+        .status-operator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
         .status-operator.active { background: var(--success); }
         .status-operator.away { background: var(--warning); }
         .status-operator.offline { background: var(--danger); }
         
         .status-pill-equipe {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
+            display: inline-block; padding: 4px 12px; border-radius: 30px;
+            font-size: 0.7rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
         }
         .status-pill-equipe.active { background: var(--success-light); color: var(--success); }
         .status-pill-equipe.away { background: var(--warning-light); color: var(--warning); }
         .status-pill-equipe.offline { background: var(--danger-light); color: var(--danger); }
         
-        .editable-cell-equipe {
-            cursor: pointer;
-            padding: 4px 6px;
-            border-radius: 8px;
-            transition: all 0.2s;
-            display: inline-block;
-        }
+        .editable-cell-equipe { cursor: pointer; padding: 4px 6px; border-radius: 8px; transition: all 0.2s; display: inline-block; }
         .editable-cell-equipe:hover { background: var(--accent-light); }
 
         .edit-menu-btn {
-            background: var(--accent-light);
-            border: none;
-            border-radius: 30px;
-            padding: 6px 16px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 16px;
-            color: var(--accent);
-            transition: all 0.2s;
+            background: var(--accent-light); border: none; border-radius: 30px; padding: 6px 16px;
+            font-size: 0.7rem; font-weight: 500; cursor: pointer; margin-top: 16px; color: var(--accent); transition: all 0.2s;
         }
-        .edit-menu-btn:hover {
-            background: var(--accent);
-            color: white;
-        }
+        .edit-menu-btn:hover { background: var(--accent); color: white; }
 
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center; z-index: 2000;
         }
         .modal-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            width: 90%;
-            max-width: 520px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-            animation: modalFadeIn 0.2s ease;
+            background: var(--bg-card); border-radius: var(--radius-xl); width: 90%; max-width: 520px;
+            max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow-lg); animation: modalFadeIn 0.2s ease;
             border: 1px solid var(--border-light);
         }
         @keyframes modalFadeIn {
@@ -645,164 +298,59 @@
             to { opacity: 1; transform: scale(1); }
         }
         .modal-header {
-            padding: 22px 26px;
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--accent-light);
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            padding: 22px 26px; border-bottom: 1px solid var(--border-light);
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--accent-light); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
         }
         .modal-header h3 { color: var(--accent); font-weight: 700; font-size: 1.2rem; margin: 0; display: flex; align-items: center; gap: 10px; }
         .modal-close {
-            background: none;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: all 0.2s;
+            background: none; border: none; width: 32px; height: 32px; border-radius: 50%;
+            font-size: 20px; cursor: pointer; color: var(--text-secondary); transition: all 0.2s;
         }
         .modal-close:hover { background: var(--danger); color: white; }
         .modal-body { padding: 26px; }
         .modal-body textarea {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-md);
-            background: var(--bg-card);
-            color: var(--text-primary);
-            font-family: 'Inter', monospace;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            resize: vertical;
+            width: 100%; padding: 16px; border: 2px solid var(--border-light); border-radius: var(--radius-md);
+            background: var(--bg-card); color: var(--text-primary); font-family: 'Inter', monospace;
+            font-size: 0.85rem; line-height: 1.6; resize: vertical;
         }
-        .modal-body textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
+        .modal-body textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
         .modal-body input, .modal-body select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-md);
-            background: var(--bg-card);
-            color: var(--text-primary);
-            font-size: 0.9rem;
+            width: 100%; padding: 14px 16px; border: 2px solid var(--border-light); border-radius: var(--radius-md);
+            background: var(--bg-card); color: var(--text-primary); font-size: 0.9rem;
         }
-        .modal-body input:focus, .modal-body select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
+        .modal-body input:focus, .modal-body select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
         .modal-footer {
-            padding: 20px 26px;
-            border-top: 1px solid var(--border-light);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
+            padding: 20px 26px; border-top: 1px solid var(--border-light);
+            display: flex; justify-content: flex-end; gap: 12px;
         }
         .modal-footer button {
-            padding: 10px 28px;
-            border-radius: 40px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: all 0.2s;
+            padding: 10px 28px; border-radius: 40px; border: none; cursor: pointer;
+            font-weight: 600; font-size: 0.8rem; transition: all 0.2s;
         }
-        .modal-footer button:first-child {
-            background: var(--border-light);
-            color: var(--text-secondary);
-        }
-        .modal-footer button:first-child:hover {
-            background: var(--text-muted);
-            color: white;
-        }
-        .modal-footer button:last-child {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: white;
-        }
-        .modal-footer button:last-child:hover {
-            transform: scale(0.98);
-        }
+        .modal-footer button:first-child { background: var(--border-light); color: var(--text-secondary); }
+        .modal-footer button:first-child:hover { background: var(--text-muted); color: white; }
+        .modal-footer button:last-child { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: white; }
+        .modal-footer button:last-child:hover { transform: scale(0.98); }
 
         .alert {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: var(--accent);
-            color: white;
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            z-index: 1100;
-            box-shadow: var(--shadow-lg);
-            animation: slideUp 0.3s ease;
+            position: fixed; bottom: 24px; right: 24px; background: var(--accent); color: white;
+            padding: 10px 24px; border-radius: 50px; font-size: 0.8rem; font-weight: 500;
+            z-index: 1100; box-shadow: var(--shadow-lg); animation: slideUp 0.3s ease;
         }
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ========== CAPTURING MODE CORRIGIDO - TABELA HORIZONTAL ========== */
         body.capturing .edit-badge,
         body.capturing .edit-menu-btn,
         body.capturing .action-btn,
         body.capturing .menu-btn,
         body.capturing .user-avatar,
         body.capturing .delete-icon,
-        body.capturing .status-badge,
-        body.capturing .editable,
-        body.capturing .editable-cell-equipe,
-        body.capturing .status-pill-equipe,
-        body.capturing .sidebar,
-        body.capturing .dark-mode-toggle {
+        body.capturing .sidebar {
             display: none !important;
-        }
-        
-        /* Força a tabela a manter o layout HORIZONTAL durante a captura */
-        body.capturing .table-wrapper {
-            overflow-x: visible !important;
-            overflow-y: visible !important;
-        }
-        
-        body.capturing table,
-        body.capturing #systemsTable {
-            display: table !important;
-            width: 100% !important;
-            table-layout: fixed !important;
-            border-collapse: collapse !important;
-        }
-        
-        body.capturing #systemsTable thead,
-        body.capturing #systemsTable tbody,
-        body.capturing #systemsTable tr {
-            display: table-row-group !important;
-        }
-        
-        body.capturing #systemsTable tr {
-            display: table-row !important;
-        }
-        
-        body.capturing #systemsTable th,
-        body.capturing #systemsTable td {
-            display: table-cell !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            background: var(--bg-card) !important;
-            color: var(--text-primary) !important;
-            padding: 10px 8px !important;
-            border-bottom: 1px solid var(--border-light) !important;
-        }
-        
-        body.capturing #systemsTable th {
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark)) !important;
-            color: white !important;
         }
         
         body.capturing .info-value {
@@ -811,22 +359,9 @@
             cursor: default !important;
         }
         
-        body.capturing .cftv-card,
-        body.capturing .status-card,
-        body.capturing .chart-container,
-        body.capturing .highlights,
-        body.capturing .observations {
-            background: var(--bg-card) !important;
-        }
-        
-        body.capturing .cftv-section {
-            background: var(--accent-light) !important;
-        }
-        
-        body.capturing img[src*="data:image"] {
+        body.capturing .status-badge {
+            cursor: default !important;
             display: inline-block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
         }
 
         @media (max-width: 768px) {
@@ -843,7 +378,7 @@
 <body>
 <div class="container" id="dashboardContainer">
     <div class="header">
-        <div class="logo-area"><img src="https://i.imgur.com/zCPScGF.png" alt="Via Appia" style="height: 38px;"></div>
+        <div class="logo-area"><img src="https://i.imgur.com/zCPScGF.png" alt="Via Appia" style="height: 38px;" onerror="this.style.display='none'"></div>
         <div class="title-area">
             <h1>🎯 INFORMATIVO GERENCIAL</h1>
             <div class="subtitle">Rodoanel Mário Covas - SP 021 - Trecho Norte</div>
@@ -895,7 +430,7 @@
         <div class="section-title">📋 STATUS E HORÁRIO DOS TESTES <button class="edit-badge" data-tooltip="Adicionar novo horário de teste" onclick="addTest()">⏰ Adicionar teste</button></div>
         <div class="table-wrapper">
             <table id="systemsTable">
-                <thead><tr><th>SISTEMA</th><th>STATUS</th><th>1º TESTE</th><th>2º TESTE</th><th>OBSERVAÇÃO</th><th></th></thead>
+                <thead><tr><th>SISTEMA</th><th>STATUS</th><th>1º TESTE</th><th>2º TESTE</th><th>OBSERVAÇÃO</th><th></th></tr></thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
@@ -940,14 +475,14 @@
 </div>
 
 <script>
-    // DADOS PRINCIPAIS
+    // ==================== DADOS INICIAIS ====================
     let cftvData = { funcionando: 42, comProblemas: 12, inoperantes: 4, total: 58 };
     let systems = {
-        "0800": { status: "Funcionando", obs: "", t1: "09h58", t2: "15h47" },
-        "CFTV": { status: "Parcialmente", obs: "42 OK, 12 prob, 4 inop", t1: "16h09", t2: "–" },
-        "CALL BOX - Túnel": { status: "Funcionando", obs: "", t1: "09h10", t2: "–" },
-        "SOS": { status: "Funcionando", obs: "", t1: "09h16", t2: "15h46" },
-        "SAT": { status: "Funcionando", obs: "", t1: "–", t2: "–" },
+        "0800": { status: "Funcionando", obs: "", t1: "09h58", t2: "15h47", imagem: null },
+        "CFTV": { status: "Parcialmente", obs: "42 OK, 12 prob, 4 inop", t1: "16h09", t2: "–", imagem: null },
+        "CALL BOX - Túnel": { status: "Funcionando", obs: "", t1: "09h10", t2: "–", imagem: null },
+        "SOS": { status: "Funcionando", obs: "", t1: "09h16", t2: "15h46", imagem: null },
+        "SAT": { status: "Funcionando", obs: "", t1: "–", t2: "–", imagem: null },
         "TOTEM": { status: "Funcionando", obs: "SEM IMAGEM", t1: "06h43", t2: "15h45", imagem: null }
     };
     let destaques = [
@@ -1012,9 +547,61 @@
         ]
     };
 
-    function showMsg(msg) { let d = document.createElement("div"); d.className="alert"; d.innerText=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),2500); }
-    function pushHistory() { historyStack.push(JSON.parse(JSON.stringify({ cftvData, systems, destaques, observacoesGerais }))); if(historyStack.length>10) historyStack.shift(); }
-    function undoLast() { if(historyStack.length){ let last=historyStack.pop(); cftvData=last.cftvData; systems=last.systems; destaques=last.destaques; observacoesGerais=last.observacoesGerais; renderAll(); showMsg("↩️ Desfeito"); } else showMsg("Nada para desfazer"); }
+    // ==================== FUNÇÕES PRINCIPAIS ====================
+    function showMsg(msg) { 
+        let d = document.createElement("div"); 
+        d.className="alert"; 
+        d.innerText=msg; 
+        document.body.appendChild(d); 
+        setTimeout(()=>d.remove(),2500); 
+    }
+
+    function pushHistory() { 
+        historyStack.push(JSON.parse(JSON.stringify({ cftvData, systems, destaques, observacoesGerais }))); 
+        if(historyStack.length>10) historyStack.shift(); 
+    }
+    
+    function undoLast() { 
+        if(historyStack.length){ 
+            let last=historyStack.pop(); 
+            cftvData=last.cftvData; 
+            systems=last.systems; 
+            destaques=last.destaques; 
+            observacoesGerais=last.observacoesGerais; 
+            renderAll(); 
+            showMsg("↩️ Desfeito"); 
+        } else showMsg("Nada para desfazer"); 
+    }
+
+    function saveAllData() {
+        const allData = {
+            cftvData, systems, destaques, observacoesGerais, equipeData, sidebarStore,
+            data: document.getElementById("dataValue").innerHTML,
+            periodo: document.getElementById("periodoValue").innerHTML,
+            turno: document.getElementById("turnoValue").innerHTML
+        };
+        localStorage.setItem("dashboardComplete", JSON.stringify(allData));
+    }
+
+    function loadAllData() {
+        const saved = localStorage.getItem("dashboardComplete");
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                cftvData = data.cftvData;
+                systems = data.systems;
+                destaques = data.destaques;
+                observacoesGerais = data.observacoesGerais;
+                if (data.equipeData) equipeData = data.equipeData;
+                if (data.sidebarStore) sidebarStore = data.sidebarStore;
+                document.getElementById("dataValue").innerHTML = data.data;
+                document.getElementById("periodoValue").innerHTML = data.periodo;
+                document.getElementById("turnoValue").innerHTML = data.turno;
+                return true;
+            } catch(e) { console.warn(e); }
+        }
+        return false;
+    }
 
     function openBeautifulModal(title, content, onSave, isTextarea = true, placeholder = "") {
         const modal = document.createElement('div');
@@ -1035,13 +622,14 @@
         modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
     }
 
+    // ==================== EDIÇÃO ====================
     function editOcorrenciaItem(index) {
         const [tipo, qtde] = sidebarStore.ocorrencias[index].split(';');
         openBeautifulModal(`Editar Ocorrência - ${tipo}`, qtde, (novoValor) => {
             const novaQtde = parseInt(novoValor);
             if (!isNaN(novaQtde) && novaQtde >= 0) {
                 sidebarStore.ocorrencias[index] = `${tipo};${novaQtde}`;
-                saveSidebar(); renderSidebar();
+                saveAllData(); renderSidebar();
                 showMsg(`✅ ${tipo} atualizado`);
             } else showMsg("❌ Valor inválido", true);
         }, false, "Digite a quantidade");
@@ -1054,7 +642,7 @@
             if (!isNaN(novaQtde) && novaQtde >= 0) {
                 sidebarStore.vdm[tipo] = novaQtde;
                 sidebarStore.vdm.total = sidebarStore.vdm.interna + sidebarStore.vdm.externa;
-                saveSidebar(); renderSidebar();
+                saveAllData(); renderSidebar();
                 showMsg(`✅ ${label} atualizado`);
             } else showMsg("❌ Valor inválido", true);
         }, false, "Digite o volume");
@@ -1073,7 +661,7 @@
                 if (line.toLowerCase().startsWith('senha:')) novaSenha = line.substring(6).trim();
             }
             sidebarStore.links[index] = `${novoNome};${novaUrl};${novoLogin};${novaSenha}`;
-            saveSidebar(); renderSidebar();
+            saveAllData(); renderSidebar();
             showMsg(`✅ Link ${novoNome} atualizado`);
         }, true, "Edite os dados");
     }
@@ -1082,7 +670,7 @@
         const [nome, telefone] = sidebarStore.contatos_emergencia[index].split(';');
         openBeautifulModal(`Editar Contato - ${nome}`, telefone, (novoValor) => {
             sidebarStore.contatos_emergencia[index] = `${nome};${novoValor}`;
-            saveSidebar(); renderSidebar();
+            saveAllData(); renderSidebar();
             showMsg(`✅ ${nome} atualizado`);
         }, false, "Digite o telefone");
     }
@@ -1091,12 +679,12 @@
         const [nome, telefone] = sidebarStore.contatos_concessionarias[index].split(';');
         openBeautifulModal(`Editar Concessionária - ${nome}`, telefone, (novoValor) => {
             sidebarStore.contatos_concessionarias[index] = `${nome};${novoValor}`;
-            saveSidebar(); renderSidebar();
+            saveAllData(); renderSidebar();
             showMsg(`✅ ${nome} atualizado`);
         }, false, "Digite o telefone");
     }
 
-    function editEquipeField(index, field, type, element) {
+    function editEquipeField(index, field, type) {
         pushHistory();
         if (type === "status") {
             const modal = document.createElement('div');
@@ -1114,7 +702,7 @@
             modal.querySelector('.btn-cancel').onclick = () => modal.remove();
             modal.querySelector('.btn-save').onclick = () => {
                 equipeData[index].status = modal.querySelector('#statusSelect').value;
-                saveEquipe(); renderEquipe();
+                saveAllData(); renderEquipe();
                 modal.remove(); showMsg("✅ Status atualizado");
             };
             return;
@@ -1122,7 +710,7 @@
         const fieldLabels = { funcao: "Função", nome: "Nome", turno: "Turno", veiculo: "Veículo" };
         openBeautifulModal(`Editar ${fieldLabels[field]}`, equipeData[index][field], (novoValor) => {
             equipeData[index][field] = novoValor;
-            saveEquipe(); renderEquipe();
+            saveAllData(); renderEquipe();
             showMsg(`✅ ${fieldLabels[field]} atualizado`);
         }, false, `Digite o ${fieldLabels[field].toLowerCase()}`);
     }
@@ -1141,15 +729,13 @@
             }
             openBeautifulModal('👥 Editar Equipe (Em Massa)\nFormato: função;nome;turno;veículo;status;obs', equipeToText(), (novoTexto) => {
                 equipeData = textToEquipe(novoTexto);
-                saveEquipe(); renderEquipe();
+                saveAllData(); renderEquipe();
                 showMsg('✅ Equipe atualizada');
             }, true, "função;nome;turno;veículo;status;obs");
         }
     }
 
-    function saveEquipe() { localStorage.setItem("equipeData", JSON.stringify(equipeData)); }
-    function loadEquipe() { let saved = localStorage.getItem("equipeData"); if(saved) equipeData = JSON.parse(saved); }
-
+    // ==================== RENDERIZAÇÃO (TODAS AS FUNÇÕES) ====================
     function renderEquipe() {
         let html = `<table class="equipe-table"><thead><tr><th>Função</th><th>Nome / Observação</th><th>Turno</th><th>Veículo</th><th>Status</th></tr></thead><tbody>`;
         for (let i = 0; i < equipeData.length; i++) {
@@ -1161,11 +747,11 @@
             let nomeExib = m.nome || '-';
             let obsExib = m.obs ? `<br><span style="font-size:0.65rem; color:var(--text-muted);">${m.obs}</span>` : '';
             html += `<tr>
-                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'funcao', 'text', this)">${m.funcao}</span></td>
-                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'nome', 'text', this)">${nomeExib}</span>${obsExib}</td>
-                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'turno', 'text', this)">${m.turno || '-'}</span></td>
-                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'veiculo', 'text', this)">${m.veiculo}</span></td>
-                <td><span class="status-pill-equipe ${statusColor}" onclick="editEquipeField(${i}, 'status', 'status', this)">${statusText}</span></td>
+                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'funcao', 'text')">${m.funcao}</span></td>
+                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'nome', 'text')">${nomeExib}</span>${obsExib}</td>
+                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'turno', 'text')">${m.turno || '-'}</span></td>
+                <td><span class="editable-cell-equipe" onclick="editEquipeField(${i}, 'veiculo', 'text')">${m.veiculo}</span></td>
+                <td><span class="status-pill-equipe ${statusColor}" onclick="editEquipeField(${i}, 'status', 'status')">${statusText}</span></td>
             </tr>`;
         }
         html += `</tbody></table>`;
@@ -1197,62 +783,96 @@
         chart = new Chart(document.getElementById("statusChart"), {
             type: "bar",
             data: { labels: ["Funcionando","Parcialmente","Inoperante"], datasets: [{ label: "Sistemas", data: [cnt.Funcionando, cnt.Parcialmente, cnt.Inoperante], backgroundColor: ["#10b981","#f59e0b","#ef4444"] }] },
-            options: { responsive: true, maintainAspectRatio: true }
+            options: { responsive: true }
         });
     }
 
+    // FUNÇÃO PRINCIPAL DA TABELA - CORRIGIDA
     function renderTable() {
         let tbody = document.getElementById("tableBody");
+        if (!tbody) return;
         tbody.innerHTML = "";
+        
         for(let sys in systems){
-            let styleStatus = systems[sys].status === "Funcionando" ? "background:var(--success-light); color:#065f46;" : (systems[sys].status === "Parcialmente" ? "background:var(--warning-light); color:#92400e;" : "background:var(--danger-light); color:#991b1b;");
-            let obsCell = "";
-            if (sys === "TOTEM" && systems[sys].imagem) {
-                obsCell = `<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                            <img src="${systems[sys].imagem}" style="width:50px; height:50px; object-fit:cover; border-radius:8px; cursor:pointer;" onclick="viewImage('${systems[sys].imagem}')">
-                            <button class="edit-badge" onclick="addTotemImage()">📷 Trocar</button>
-                            <button class="edit-badge" onclick="removeTotemImage()">🗑️ Remover</button>
-                           </div>`;
-            } else if (sys === "TOTEM") {
-                obsCell = `<div><button class="edit-badge" onclick="addTotemImage()">📷 Adicionar Foto</button><br><span class="editable" data-sys="${sys}" data-field="obs" style="cursor:pointer;">${systems[sys].obs||"-"}</span></div>`;
+            let styleStatus = "";
+            if(systems[sys].status === "Funcionando") {
+                styleStatus = "background:var(--success-light); color:#065f46;";
+            } else if(systems[sys].status === "Parcialmente") {
+                styleStatus = "background:var(--warning-light); color:#92400e;";
             } else {
-                obsCell = `<span class="editable" data-sys="${sys}" data-field="obs" style="cursor:pointer;">${systems[sys].obs||"-"}</span>`;
+                styleStatus = "background:var(--danger-light); color:#991b1b;";
             }
+            
+            // Tratamento especial para TOTEM com imagem
+            let obsCell = '';
+            if (sys === "TOTEM") {
+                if (systems[sys].imagem) {
+                    obsCell = `<div style="display:flex; flex-direction:column; gap:5px; align-items:flex-start;">
+                        <img src="${systems[sys].imagem}" style="max-width:50px; border-radius:8px; cursor:pointer;" onclick="viewImage('${systems[sys].imagem}')">
+                        <button class="edit-badge" style="width:80px;" onclick="addTotemImage()">📷 Trocar</button>
+                    </div>`;
+                } else {
+                    obsCell = `<div style="display:flex; align-items:center; gap:8px;">
+                        <span>SEM IMAGEM</span>
+                        <button class="edit-badge" onclick="addTotemImage()">📷 Adicionar</button>
+                    </div>`;
+                }
+            } else {
+                obsCell = `<span class="editable" data-sys="${sys}" data-field="obs" style="cursor:pointer;">${systems[sys].obs || "-"}</span>`;
+            }
+            
             let row = tbody.insertRow();
             row.innerHTML = `
                 <td><strong>${sys}</strong></td>
                 <td><span class="status-badge" style="${styleStatus}" onclick="editStatus('${sys}')">${systems[sys].status}</span></td>
-                <td class="editable" data-sys="${sys}" data-field="t1" style="cursor:pointer;">${systems[sys].t1}</span></td>
-                <td class="editable" data-sys="${sys}" data-field="t2" style="cursor:pointer;">${systems[sys].t2}</span></td>
-                <td>${obsCell}</span></td>
-                <td><span class="delete-icon" onclick="deleteSystem('${sys}')" data-tooltip="Remover sistema">🗑️</span></td>
+                <td class="editable" data-sys="${sys}" data-field="t1" style="cursor:pointer;">${systems[sys].t1}</td>
+                <td class="editable" data-sys="${sys}" data-field="t2" style="cursor:pointer;">${systems[sys].t2}</td>
+                <td>${obsCell}</td>
+                <td><span class="delete-icon" onclick="deleteSystem('${sys}')" data-tooltip="Remover sistema" style="cursor:pointer; font-size:1.1rem;">🗑️</span></td>
             `;
         }
-        document.querySelectorAll('.editable').forEach(el => { 
-            el.onclick = (e) => { 
+        
+        // Adicionar eventos para campos editáveis
+        document.querySelectorAll('.editable').forEach(el => {
+            el.onclick = (e) => {
                 e.stopPropagation();
-                const sys = el.dataset.sys; 
-                const field = el.dataset.field; 
-                if(sys && field) editTestTime(sys, field, el); 
-            }; 
+                const sys = el.dataset.sys;
+                const field = el.dataset.field;
+                editTestTime(sys, field, el);
+            };
         });
     }
 
     function renderAll() {
-        renderCftv(); renderStatusCards(); renderTable();
+        renderCftv(); 
+        renderStatusCards(); 
+        renderTable();  // CHAMADA IMPORTANTE!
         document.getElementById("highlightsText").innerHTML = destaques.map(d=>`<p>${d}</p>`).join("");
         document.getElementById("observacoesText").innerHTML = observacoesGerais.map(o=>`<p>${o}</p>`).join("");
         document.getElementById("lastUpdate").innerHTML = `✓ ${new Date().toLocaleTimeString("pt-BR")}`;
-        localStorage.setItem("dashboardMain", JSON.stringify({ cftvData, systems, destaques, observacoesGerais }));
+        saveAllData();
     }
 
+    function renderSidebar() {
+        let ocorrHtml = sidebarStore.ocorrencias.map((l, idx) => { let [t,q]=l.split(";"); let val=parseInt(q); let level=val<=3?"low":(val<=10?"medium":"high"); return `<div class="occurrence-item" data-value="${level}" onclick="editOcorrenciaItem(${idx})"><span>${t}</span><span>${q}</span></div>`; }).join("");
+        document.getElementById("ocorrenciasList").innerHTML = ocorrHtml;
+        let vdm = sidebarStore.vdm;
+        document.getElementById("vdmList").innerHTML = `<div class="vdm-item" onclick="editVDMItem('interna')"><span>📥 VDM Interna</span><span>${vdm.interna.toLocaleString()}</span></div><div class="vdm-item" onclick="editVDMItem('externa')"><span>📤 VDM Externa</span><span>${vdm.externa.toLocaleString()}</span></div><div class="vdm-item" style="border-bottom:none; margin-top:8px; background:var(--accent-light); border-radius:12px;"><span><strong>📊 VDM Total</strong></span><span><strong>${vdm.total.toLocaleString()}</strong></span></div>`;
+        let linksHtml = sidebarStore.links.map((l, idx) => { let [nome,url,login,senha]=l.split(";"); return `<div class="link-item" onclick="editLinkItem(${idx})"><div class="link-title"><span>🔗</span> <strong>${nome}</strong></div><div style="font-size:0.7rem;">${url ? `🌐 ${url}<br>` : ""}👤 ${login}<br>🔒 ${senha}</div></div>`; }).join("");
+        document.getElementById("linksList").innerHTML = linksHtml;
+        let contEmerg = sidebarStore.contatos_emergencia.map((c, idx) => { let [n,t]=c.split(";"); return `<div class="contact-item" onclick="editContatoEmergencia(${idx})"><strong>🚨 ${n}</strong><br>📞 ${t}</div>`; }).join("");
+        let contConc = sidebarStore.contatos_concessionarias.map((c, idx) => { let [n,t]=c.split(";"); return `<div class="contact-item" onclick="editContatoConcessionaria(${idx})"><strong>🏢 ${n}</strong><br>📞 ${t}</div>`; }).join("");
+        document.getElementById("contatosList").innerHTML = `<h5 style="margin-bottom:12px;">🚨 EMERGÊNCIA</h5>${contEmerg}<h5 style="margin:20px 0 12px 0;">🏢 CONCESSIONÁRIAS</h5>${contConc}`;
+    }
+
+    // ==================== FUNÇÕES DE EDIÇÃO PRINCIPAL ====================
     function editField(id, title) { 
         let el = document.getElementById(id); 
         let val = el.innerText.replace(/[📅⏰🔄✓]/g, '').trim();
         openBeautifulModal(title, val.replace(/<br>/g, '\n'), (novoValor) => {
             let prefix = id === 'dataValue' ? '📅 ' : (id === 'periodoValue' ? '⏰ ' : (id === 'turnoValue' ? '🔄 ' : ''));
             el.innerHTML = prefix + novoValor.replace(/\n/g, '<br>');
-            renderAll(); showMsg("✅ Atualizado");
+            renderAll();
         });
     }
 
@@ -1266,48 +886,29 @@
     function editHighlights() { pushHistory(); openBeautifulModal('📌 Editar Destaques', destaques.join('\n'), (txt) => { destaques = txt.split('\n').filter(l=>l.trim()); renderAll(); showMsg("✅ Destaques atualizados"); }); }
     function editObservacoes() { pushHistory(); openBeautifulModal('📝 Editar Observações', observacoesGerais.join('\n'), (txt) => { observacoesGerais = txt.split('\n').filter(l=>l.trim()); renderAll(); showMsg("✅ Observações atualizadas"); }); }
     function editStatus(sys) { pushHistory(); let modal=document.createElement('div'); modal.className='modal-overlay'; modal.innerHTML=`<div class="modal-card"><div class="modal-header"><h3>🔄 Status - ${sys}</h3><button class="modal-close">&times;</button></div><div class="modal-body"><select id="statusSelect" style="width:100%; padding:14px;"><option>Funcionando</option><option>Parcialmente</option><option>Inoperante</option></select></div><div class="modal-footer"><button class="btn-cancel">Cancelar</button><button class="btn-save">Salvar</button></div></div>`; document.body.appendChild(modal); modal.querySelector('#statusSelect').value=systems[sys].status; modal.querySelector('.modal-close').onclick=()=>modal.remove(); modal.querySelector('.btn-cancel').onclick=()=>modal.remove(); modal.querySelector('.btn-save').onclick=()=>{ systems[sys].status=modal.querySelector('#statusSelect').value; renderAll(); modal.remove(); showMsg("✅ Status atualizado"); }; }
-    function editTestTime(sys, field, el) { pushHistory(); openBeautifulModal(`⏰ Editar ${field==='t1'?'1º Teste':'2º Teste'} - ${sys}`, systems[sys][field], (novo)=>{ systems[sys][field]=novo; if(el) el.innerText=novo; renderAll(); showMsg("✅ Horário atualizado"); }, false, "Digite o horário (ex: 14h30)"); }
+    function editTestTime(sys, field, el) { pushHistory(); openBeautifulModal(`⏰ Editar ${field==='t1'?'1º Teste':'2º Teste'} - ${sys}`, systems[sys][field], (novo)=>{ systems[sys][field]=novo; el.innerText=novo; renderAll(); showMsg("✅ Horário atualizado"); }, false, "Digite o horário (ex: 14h30)"); }
     function addSystem() { pushHistory(); openBeautifulModal('➕ Adicionar Sistema', '', (nome)=>{ let name=nome.trim(); if(name && !systems[name]){ systems[name]={status:"Funcionando", obs:"", t1:"--:--", t2:"--:--", imagem:null}; renderAll(); showMsg(`✅ ${name} adicionado`); } else showMsg("❌ Inválido"); }, false, "Digite o nome do sistema"); }
     function addTest() { pushHistory(); let modal=document.createElement('div'); modal.className='modal-overlay'; modal.innerHTML=`<div class="modal-card"><div class="modal-header"><h3>⏰ Adicionar Teste</h3><button class="modal-close">&times;</button></div><div class="modal-body"><input type="text" id="sysName" placeholder="Nome do sistema" style="width:100%; padding:14px; margin-bottom:12px;"><select id="testType" style="width:100%; padding:14px; margin-bottom:12px;"><option value="t1">1º Teste</option><option value="t2">2º Teste</option></select><input type="text" id="testTime" placeholder="Horário (ex: 14h30)" style="width:100%; padding:14px;"></div><div class="modal-footer"><button class="btn-cancel">Cancelar</button><button class="btn-save">Salvar</button></div></div>`; document.body.appendChild(modal); modal.querySelector('.modal-close').onclick=()=>modal.remove(); modal.querySelector('.btn-cancel').onclick=()=>modal.remove(); modal.querySelector('.btn-save').onclick=()=>{ let sys=modal.querySelector('#sysName').value.trim(); let tipo=modal.querySelector('#testType').value; let time=modal.querySelector('#testTime').value.trim(); if(sys && systems[sys] && time){ systems[sys][tipo]=time; renderAll(); modal.remove(); showMsg(`✅ Horário de ${sys}`); } else showMsg("❌ Sistema inválido"); }; }
     function deleteSystem(sys) { if(confirm(`Remover "${sys}"?`)){ pushHistory(); delete systems[sys]; renderAll(); showMsg(`🗑️ ${sys} removido`); } }
     
     function addTotemImage() { 
-        let inp = document.createElement("input"); 
-        inp.type = "file"; 
-        inp.accept = "image/*"; 
-        inp.onchange = e => { 
+        let input = document.createElement("input"); 
+        input.type = "file"; 
+        input.accept = "image/*"; 
+        input.onchange = function(e) { 
             let file = e.target.files[0]; 
             if(file){ 
-                let rd = new FileReader(); 
-                rd.onload = ev => { 
+                let reader = new FileReader(); 
+                reader.onload = function(ev) { 
                     systems["TOTEM"].imagem = ev.target.result; 
-                    systems["TOTEM"].obs = "Foto anexada"; 
+                    systems["TOTEM"].obs = ""; 
                     renderAll(); 
                     showMsg("✅ Foto adicionada ao TOTEM"); 
-                    localStorage.setItem("totemImage", ev.target.result);
                 }; 
-                rd.readAsDataURL(file); 
+                reader.readAsDataURL(file); 
             } 
         }; 
-        inp.click(); 
-    }
-    
-    function removeTotemImage() {
-        if(confirm("Remover a foto do TOTEM?")) {
-            systems["TOTEM"].imagem = null;
-            systems["TOTEM"].obs = "SEM IMAGEM";
-            renderAll();
-            localStorage.removeItem("totemImage");
-            showMsg("🗑️ Foto removida");
-        }
-    }
-    
-    function loadTotemImageFromLocal() {
-        let saved = localStorage.getItem("totemImage");
-        if(saved && systems["TOTEM"]) {
-            systems["TOTEM"].imagem = saved;
-            systems["TOTEM"].obs = "Foto anexada";
-        }
+        input.click(); 
     }
     
     function viewImage(src) { 
@@ -1322,30 +923,19 @@
         showMsg("Gerando imagem..."); 
         try { 
             document.body.classList.add("capturing"); 
-            await new Promise(r => setTimeout(r, 300)); 
-            const element = document.getElementById("dashboardContainer");
-            const canvas = await html2canvas(element, { 
+            await new Promise(r => setTimeout(r, 200)); 
+            let canvas = await html2canvas(document.getElementById("dashboardContainer"), { 
                 scale: 2.5, 
                 backgroundColor: "#ffffff", 
                 useCORS: true, 
                 logging: false,
-                windowWidth: element.scrollWidth,
-                windowHeight: element.scrollHeight,
-                onclone: (clonedDoc, element) => {
-                    // Garante que a tabela no clone mantenha o layout horizontal
-                    const clonedTable = clonedDoc.getElementById("systemsTable");
-                    if(clonedTable) {
-                        clonedTable.style.display = "table";
-                        clonedTable.style.width = "100%";
-                        clonedTable.style.tableLayout = "fixed";
-                    }
-                }
+                allowTaint: false
             }); 
             let link = document.createElement("a"); 
-            link.download = `informativo_${new Date().toLocaleDateString("pt-BR").replace(/\//g, "-")}.png`; 
+            link.download = `dashboard_${Date.now()}.png`; 
             link.href = canvas.toDataURL(); 
             link.click(); 
-            showMsg("✅ Imagem salva com sucesso"); 
+            showMsg("✅ Imagem salva"); 
         } catch(e){ 
             console.error(e);
             showMsg("❌ Erro ao gerar imagem"); 
@@ -1354,51 +944,92 @@
         } 
     }
     
-    function shareDashboard() { let data=JSON.stringify({cftvData,systems,destaques,observacoesGerais}); let encoded=btoa(encodeURIComponent(data)); let url=`${location.origin}${location.pathname}?data=${encoded}`; navigator.clipboard.writeText(url); showMsg("🔗 Link copiado"); }
+    function shareDashboard() { 
+        saveAllData();
+        let data = JSON.stringify({ cftvData, systems, destaques, observacoesGerais, equipeData, sidebarStore, data: document.getElementById("dataValue").innerHTML, periodo: document.getElementById("periodoValue").innerHTML, turno: document.getElementById("turnoValue").innerHTML }); 
+        let encoded = btoa(encodeURIComponent(data)); 
+        let url = `${location.origin}${location.pathname}?data=${encoded}`; 
+        navigator.clipboard.writeText(url); 
+        showMsg("🔗 Link copiado!"); 
+    }
+    
     function toggleObservacoesSec() { let sec=document.getElementById("obsSection"); sec.style.display=sec.style.display==="none"?"block":"none"; showMsg(sec.style.display==="block"?"📝 Visível":"📝 Oculto"); }
 
-    function renderSidebar() {
-        let ocorrHtml = sidebarStore.ocorrencias.map((l, idx) => { let [t,q]=l.split(";"); let val=parseInt(q); let level=val<=3?"low":(val<=10?"medium":"high"); return `<div class="occurrence-item" data-value="${level}" onclick="editOcorrenciaItem(${idx})"><span>${t}</span><span>${q}</span></div>`; }).join("");
-        document.getElementById("ocorrenciasList").innerHTML = ocorrHtml;
-        let vdm = sidebarStore.vdm;
-        document.getElementById("vdmList").innerHTML = `<div class="vdm-item" onclick="editVDMItem('interna')"><span>📥 VDM Interna</span><span>${vdm.interna.toLocaleString()}</span></div><div class="vdm-item" onclick="editVDMItem('externa')"><span>📤 VDM Externa</span><span>${vdm.externa.toLocaleString()}</span></div><div class="vdm-item" style="border-bottom:none; margin-top:8px; background:var(--accent-light); border-radius:12px;"><span><strong>📊 VDM Total</strong></span><span><strong>${vdm.total.toLocaleString()}</strong></span></div>`;
-        let linksHtml = sidebarStore.links.map((l, idx) => { let [nome,url,login,senha]=l.split(";"); return `<div class="link-item" onclick="editLinkItem(${idx})"><div class="link-title"><span>🔗</span> <strong>${nome}</strong></div><div style="font-size:0.7rem;">${url ? `🌐 ${url}<br>` : ""}👤 ${login}<br>🔒 ${senha}</div></div>`; }).join("");
-        document.getElementById("linksList").innerHTML = linksHtml;
-        let contEmerg = sidebarStore.contatos_emergencia.map((c, idx) => { let [n,t]=c.split(";"); return `<div class="contact-item" onclick="editContatoEmergencia(${idx})"><strong>🚨 ${n}</strong><br>📞 ${t}</div>`; }).join("");
-        let contConc = sidebarStore.contatos_concessionarias.map((c, idx) => { let [n,t]=c.split(";"); return `<div class="contact-item" onclick="editContatoConcessionaria(${idx})"><strong>🏢 ${n}</strong><br>📞 ${t}</div>`; }).join("");
-        document.getElementById("contatosList").innerHTML = `<h5 style="margin-bottom:12px;">🚨 EMERGÊNCIA</h5>${contEmerg}<h5 style="margin:20px 0 12px 0;">🏢 CONCESSIONÁRIAS</h5>${contConc}`;
+    async function updateWeather() { 
+        try { 
+            let res = await fetch('https://wttr.in/SaoPaulo?format=%t+%c'); 
+            let txt = await res.text(); 
+            let temp = txt.match(/([+-]?\d+°C)/)?.[0] || "--°C"; 
+            let icon = txt.includes("☀️") ? "☀️" : txt.includes("🌧️") ? "🌧️" : txt.includes("☁️") ? "☁️" : "🌡️"; 
+            document.getElementById("weatherMini").innerHTML = `${icon} ${temp}`; 
+        } catch(e){ 
+            document.getElementById("weatherMini").innerHTML = "🌡️ --°C"; 
+        } 
     }
-    
-    function saveSidebar() { localStorage.setItem("sidebarData", JSON.stringify(sidebarStore)); }
-    function loadSidebar() { let s = localStorage.getItem("sidebarData"); if(s) sidebarStore = JSON.parse(s); renderSidebar(); }
-
-    async function updateWeather() { try { let res=await fetch('https://wttr.in/SaoPaulo?format=%t+%c'); let txt=await res.text(); let temp=txt.match(/([+-]?\d+°C)/)?.[0]||"--°C"; let icon=txt.includes("☀️")?"☀️":txt.includes("🌧️")?"🌧️":txt.includes("☁️")?"☁️":"🌡️"; document.getElementById("weatherMini").innerHTML=`${icon} ${temp}`; } catch(e){ document.getElementById("weatherMini").innerHTML="🌡️ --°C"; } }
 
     function initMenu() {
-        let sidebar=document.getElementById("sidebar"), menuBtn=document.getElementById("menuBtn"), closeSidebar=document.getElementById("closeSidebar");
-        menuBtn.onclick=()=>sidebar.classList.add("open");
-        closeSidebar.onclick=()=>sidebar.classList.remove("open");
-        document.querySelectorAll(".tab-btn").forEach(btn=>{ btn.onclick=()=>{ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); document.querySelectorAll(".tab-pane").forEach(p=>p.classList.remove("active")); document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active"); }; });
-        let darkToggle=document.getElementById("darkModeToggleSidebar");
-        darkToggle.onclick=()=>{ document.body.classList.toggle("dark"); darkToggle.innerText=document.body.classList.contains("dark")?"Desativar":"Ativar"; };
+        let sidebar = document.getElementById("sidebar"), menuBtn = document.getElementById("menuBtn"), closeSidebar = document.getElementById("closeSidebar");
+        menuBtn.onclick = () => sidebar.classList.add("open");
+        closeSidebar.onclick = () => sidebar.classList.remove("open");
+        document.querySelectorAll(".tab-btn").forEach(btn => { 
+            btn.onclick = () => { 
+                document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); 
+                btn.classList.add("active"); 
+                document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active")); 
+                document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active"); 
+            }; 
+        });
+        let darkToggle = document.getElementById("darkModeToggleSidebar");
+        darkToggle.onclick = () => { 
+            document.body.classList.toggle("dark"); 
+            darkToggle.innerText = document.body.classList.contains("dark") ? "Desativar" : "Ativar"; 
+        };
     }
 
-    updateWeather(); setInterval(updateWeather, 600000);
+    // ==================== INICIALIZAÇÃO ====================
+    updateWeather(); 
+    setInterval(updateWeather, 600000);
     initMenu();
-    document.addEventListener("keydown", (e)=>{ if(e.ctrlKey && e.key==='z'){ e.preventDefault(); undoLast(); } });
+    document.addEventListener("keydown", (e) => { if(e.ctrlKey && e.key === 'z'){ e.preventDefault(); undoLast(); } });
 
-    function loadMainLocal() { let saved=localStorage.getItem("dashboardMain"); if(saved){ let d=JSON.parse(saved); cftvData=d.cftvData; systems=d.systems; destaques=d.destaques; observacoesGerais=d.observacoesGerais; renderAll(); } }
-    function loadFromUrl() { let params=new URLSearchParams(location.search); let enc=params.get("data"); if(enc){ try{ let data=JSON.parse(decodeURIComponent(atob(enc))); cftvData=data.cftvData; systems=data.systems; destaques=data.destaques; observacoesGerais=data.observacoesGerais; renderAll(); showMsg("📀 Dados carregados do link"); } catch(e){} } }
+    function loadFromUrl() { 
+        let params = new URLSearchParams(location.search); 
+        let enc = params.get("data"); 
+        if(enc){ 
+            try{ 
+                let data = JSON.parse(decodeURIComponent(atob(enc))); 
+                cftvData = data.cftvData; 
+                systems = data.systems; 
+                destaques = data.destaques; 
+                observacoesGerais = data.observacoesGerais;
+                if(data.equipeData) equipeData = data.equipeData;
+                if(data.sidebarStore) sidebarStore = data.sidebarStore;
+                document.getElementById("dataValue").innerHTML = data.data;
+                document.getElementById("periodoValue").innerHTML = data.periodo;
+                document.getElementById("turnoValue").innerHTML = data.turno;
+                renderAll(); 
+                renderEquipe(); 
+                renderSidebar();
+                showMsg("📀 Dados carregados do link"); 
+            } catch(e){ console.warn(e); } 
+        } 
+    }
 
-    loadEquipe();
-    loadMainLocal(); 
-    loadFromUrl(); 
-    loadSidebar(); 
-    loadTotemImageFromLocal();
-    renderEquipe();
-    renderAll();
-    setInterval(()=>document.getElementById("lastUpdate").innerHTML = `✓ ${new Date().toLocaleTimeString("pt-BR")}`, 1000);
+    // Inicialização com carregamento de dados
+    if (!loadAllData()) {
+        renderAll();
+        renderEquipe();
+        renderSidebar();
+    } else {
+        renderAll();
+        renderEquipe();
+        renderSidebar();
+    }
     
+    loadFromUrl();
+    setInterval(() => document.getElementById("lastUpdate").innerHTML = `✓ ${new Date().toLocaleTimeString("pt-BR")}`, 1000);
+    
+    // Expor funções globais
     window.editOcorrenciaItem = editOcorrenciaItem;
     window.editVDMItem = editVDMItem;
     window.editLinkItem = editLinkItem;
@@ -1414,7 +1045,6 @@
     window.addTest = addTest;
     window.deleteSystem = deleteSystem;
     window.addTotemImage = addTotemImage;
-    window.removeTotemImage = removeTotemImage;
     window.viewImage = viewImage;
     window.exportImage = exportImage;
     window.shareDashboard = shareDashboard;
